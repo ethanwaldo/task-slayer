@@ -1,0 +1,24 @@
+{
+    # Optional: Your email for Let's Encrypt certificates
+    # email your-email@example.com
+}
+
+# Replace with your domain or DuckDNS address
+taskslayer.your-domain.com {
+    # Reverse proxy to the frontend container
+    # The 'prod' target in client/Dockerfile handles the static files
+    reverse_proxy frontend:80
+
+    # Reverse proxy /api calls to the backend container
+    handle_path /api/* {
+        reverse_proxy backend:5000
+    }
+
+    # Enable compression
+    encode gzip
+
+    # Log requests
+    log {
+        output file /var/log/caddy/taskslayer_access.log
+    }
+}
