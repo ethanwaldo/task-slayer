@@ -101,53 +101,13 @@ Users choose a class that defines their playstyle and grants damage bonuses agai
 
 _This timeline is structured to align with the course syllabus, ensuring students implement features as they learn the underlying concepts._
 
-**Phase**
-
-**Weeks**
-
-**Syllabus Topic**
-
-**Project Goals**
-
-**Foundation**
-
-1-3
-
-Git, Docker, HTML
-
-**Repo & Design:** Setup GitHub repo, configure Docker/Raspberry Pi environment. Design Figma mockups for Dashboard and Shop.
-
-**Static UI**
-
-4-6
-
-CSS, Flexbox, Tailwind
-
-**Visuals First:** Build the "Shell" of the app (Monster Cards, Profile Page, Shop Grid) using static HTML/React and Tailwind. No backend logic yet.
-
-**Client Logic**
-
-7-9
-
-JS, DOM, Async/API
-
-**Mock Functionality:** Implement the "Battle Math" in plain JavaScript. Connect to OpenAI/Discord APIs directly from the client to test generation logic.
-
-**Backend Core**
-
-10-12
-
-Node, Express, MongoDB
-
-**Data Persistence:** Build the Express API. Move the "Mock" data to MongoDB. Implement User Auth (Login/Signup) as taught in class.
-
-**Integration**
-
-13-15
-
-React Components
-
-**Full Stack Assembly:** Connect the Frontend (Phase 2) to the Backend (Phase 4). Final polish, mobile testing, and live deployment.
+| Phase | Weeks | Syllabus Topic | Project Goals |
+| :--- | :--- | :--- | :--- |
+| **Foundation** | 1-3 | Git, Docker, HTML | **Repo & Design:** Setup GitHub repo, configure Docker/Raspberry Pi environment. Design Figma mockups for Dashboard and Shop. |
+| **Static UI** | 4-6 | CSS, Flexbox, Tailwind | **Visuals First:** Build the "Shell" of the app (Monster Cards, Profile Page, Shop Grid) using static HTML/React and Tailwind. |
+| **Client Logic** | 7-9 | JS, DOM, Async/API | **Mock Functionality:** Implement "Battle Math" in JS. Connect to OpenAI/Discord APIs for testing. |
+| **Backend Core** | 10-12 | Node, Express, MongoDB | **Data Persistence:** Build the Express API. Move mock data to MongoDB. Implement User Auth. |
+| **Integration** | 13-15 | React Components | **Full Stack Assembly:** Connect Frontend to Backend. Final polish, mobile testing, and deployment. |
 
 ### 5.1 Workforce Strategy: Horizontal Slices
 
@@ -258,4 +218,4 @@ The team follows a "Feature Ownership" model. Each member is responsible for the
         
     *   **AI Integration:** Writing the backend service that connects to OpenAI/Gemini to procedurally generate Monster names.
         
-    *   **Leaderboard:** Full-stack implementation of the Leaderboard page and aggregation API.# task-slayer
+    *   **Leaderboard:** Full-stack implementation of the Leaderboard page and aggregation API.
