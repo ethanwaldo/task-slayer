@@ -258,4 +258,4 @@ The team follows a "Feature Ownership" model. Each member is responsible for the
         
     *   **AI Integration:** Writing the backend service that connects to OpenAI/Gemini to procedurally generate Monster names.
         
-    *   **Leaderboard:** Full-stack implementation of the Leaderboard page and aggregation API.
+    *   **Leaderboard:** Full-stack implementation of the Leaderboard page and aggregation API.# task-slayer
