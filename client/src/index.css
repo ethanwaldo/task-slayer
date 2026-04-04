@@ -15,7 +15,7 @@ body {
   color: var(--color-slate-300);
 }
 
-.profile-container {
+.class-page-container {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -23,20 +23,20 @@ body {
   margin-top: 16px;
 }
 
-.profile-main {
+.class-page-main {
   display: flex;
   align-items: center;
   column-gap: 24px;
 }
 
-.profile-class-image {
+.class-page-class-image {
   width: 216px;
   height: 360px;
   object-fit: cover;
   border-radius: 8px;
 }
 
-.profile-change-class-button {
+.class-page-change-class-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,20 +50,20 @@ body {
   border-radius: 20px;
 }
 
-.profile-change-class-button:hover {
+.class-page-change-class-button:hover {
   background: var(--color-primary-light);
 }
 
-.profile-change-class-button-right-img {
+.class-page-change-class-button-right-img {
   transform: scaleX(-1);
 }
 
-.profile-class-name {
+.class-page-class-name {
   font-family: sans-serif;
   color: var(--color-slate-50);
 }
 
-.profile-select-button, .profile-selected-indicator {
+.class-page-select-button, .class-page-selected-indicator {
   border: 0;
   border-radius: 20px;
   padding: 10px 0px;
@@ -72,18 +72,18 @@ body {
   font-size: 1rem;
 }
 
-.profile-select-button {
+.class-page-select-button {
   background: var(--color-primary);
   border: 2px solid transparent;
   color: var(--color-primary-lightest);
   cursor: pointer;
 }
 
-.profile-select-button:hover {
+.class-page-select-button:hover {
   background: var(--color-primary-light);
 }
 
-.profile-selected-indicator {
+.class-page-selected-indicator {
   background: var(--color-slate-950);
   border: 2px solid var(--color-slate-900);
   color: var(--color-slate-400);

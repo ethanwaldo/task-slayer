@@ -7,7 +7,7 @@ import chevronLeft from "./assets/chevron-left.svg";
 import { defaultClass, isClass, nextClass, prevClass } from "./types";
 /** @import { Class } from "./types" */
 
-function Profile() {
+function ClassPage() {
   const [playerClass, setPlayerClass] = useState(/** @type {Class | null} */ (null));
   const [displayedClass, setDisplayedClass] = useState(defaultClass);
   useEffect(() => {
@@ -42,23 +42,23 @@ function Profile() {
   const formattedClass = `The ${displayedClass}`;
   return (
     <>
-      <div className="profile-container">
+      <div className="class-page-container">
         <h1 className="page-heading">Select Class</h1>
-        <div className="profile-main">
-          <button onClick={onClickPrevClass} className="profile-change-class-button">
+        <div className="class-page-main">
+          <button onClick={onClickPrevClass} className="class-page-change-class-button">
             <img alt="left arrow" src={chevronLeft}></img>
           </button>
           <ClassImage class_={displayedClass} />
-          <button onClick={onClickNextClass} className="profile-change-class-button">
-            <img className="profile-change-class-button-right-img" alt="right arrow" src={chevronLeft}></img>
+          <button onClick={onClickNextClass} className="class-page-change-class-button">
+            <img className="class-page-change-class-button-right-img" alt="right arrow" src={chevronLeft}></img>
           </button>
         </div>
-        <h2 className="profile-class-name" >{formattedClass}</h2>
+        <h2 className="class-page-class-name" >{formattedClass}</h2>
         {displayedClass === playerClass ?
-          <button className="profile-selected-indicator" disabled>
+          <button className="class-page-selected-indicator" disabled>
             Selected
           </button> :
-          <button className="profile-select-button" onClick={onClickSelect}>Select</button>
+          <button className="class-page-select-button" onClick={onClickSelect}>Select</button>
         }
       </div>      
     </>
@@ -87,10 +87,10 @@ function ClassImage({ class_ }) {
     <>
       {class_ === null ?
         <div>Loading...</div> :
-        <img className="profile-class-image" src={imageSrcFromClass(class_)}></img>
+        <img className="class-page-class-image" src={imageSrcFromClass(class_)}></img>
       }
     </>
   );
 }
 
-export default Profile;
+export default ClassPage;
