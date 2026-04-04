@@ -1,14 +1,15 @@
 import {
   BrowserRouter as Router,
-  Routes, Route, Navigate
+  Routes, Route
 } from 'react-router-dom';
 import ClassPage from "./ClassPage";
+import Home from './Home';
 
 function InsideRouter() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Navigate to="/class" replace />} />
+        <Route path="/" element={<Home />} />
         <Route path="/class" element={<ClassPage />} />
       </Routes>
     </>
