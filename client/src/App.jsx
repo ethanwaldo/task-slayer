@@ -4,6 +4,7 @@ import {
 } from 'react-router-dom';
 import ClassPage from "./ClassPage";
 import Home from './Home';
+import './global.css';
 
 function InsideRouter() {
   return (
