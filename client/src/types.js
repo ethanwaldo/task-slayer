@@ -11,11 +11,18 @@
 
 /**
  * @typedef {object} Monster
- * @property {string} name
+ * @property {number} id
+ * @property {string} taskName
+ * @property {MonsterKind} kind
  * @property {string} task
  * @property {Level} level
  * @property {number} currentHp
  * @property {number} maxHp
+ */
+
+/**
+ * 
+ * @typedef {monsterKinds[number]} MonsterKind 
  */
 
 /**
@@ -27,6 +34,17 @@
  */
 
 const classes = /** @type {const} */ (["Warrior", "Scholar", "Bard", "Monk"]);
+
+const monsterKinds = /** @type {const} */ ([
+  "Dragon",
+  "Golem",
+  "Hydra",
+  "Serpent",
+  "Skeleton",
+  "Vampire",
+  "Zombie",
+]);
+
 /** @type {Class} */
 export const defaultClass = classes[0];
 
@@ -57,4 +75,22 @@ export function prevClass(class_) {
 export function nextClass(class_) {
   const i = (classes.indexOf(class_) + 1) % classes.length;
   return classes[i];
+}
+
+/**
+ * 
+ * @returns {MonsterKind}
+ */
+export function randomMonsterKind() {
+  const i = Math.floor(Math.random() * monsterKinds.length);
+  return monsterKinds[i];
+}
+
+
+/**
+ * @param {Monster} monster
+ * @returns {string}
+ */
+export function monsterName(monster) {
+  return `${monster.taskName} ${monster.kind}`;
 }
