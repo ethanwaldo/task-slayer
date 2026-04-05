@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { monsterName, randomMonsterKind } from "./types";
+import HomeHeader from "./HomeHeader";
+import logo from "./assets/logo.png";
 /** @import { Monster } from "./types" */
 
 function Home() {
   const [task, setTask] = useState("");
   const [monsters, setMonsters] = useState(/** @type {Monster[]} */ ([]));
+
   /** @type {React.SubmitEventHandler<HTMLFormElement>} */
   function onSubmitTask(e) {
     e.preventDefault();
@@ -46,7 +49,9 @@ function Home() {
   }
   return (
     <>
+      <HomeHeader />
       <div className="hero">
+        <img className="hero-logo" alt="logo" src={logo} />
         <div className="hero-heading">Task Slayer</div>
         <div className="hero-subheading">Finish tasks. Slay monsters. Level up.</div>
       </div>

@@ -5,6 +5,7 @@ import bardImage from "./assets/bard.webp";
 import monkImage from "./assets/monk.jpg";
 import chevronLeft from "./assets/chevron-left.svg";
 import { defaultClass, isClass, nextClass, prevClass } from "./types";
+import Header from "./Header";
 /** @import { Class } from "./types" */
 
 function ClassPage() {
@@ -42,6 +43,7 @@ function ClassPage() {
   const formattedClass = `The ${displayedClass}`;
   return (
     <>
+      <Header />
       <div className="class-page-container">
         <h1 className="page-heading">Select Class</h1>
         <div className="class-page-main">
