@@ -5,7 +5,7 @@
 }
 
 body {
-  background: var(--color-slate-950);
+  background: var(--color-gray-950);
 }
 
 .hero {
@@ -21,13 +21,13 @@ body {
   font-family: sans-serif;
   font-size: 3.6rem;
   font-weight: bold;
-  color: var(--color-slate-50);
+  color: var(--color-white);
 }
 
 .hero-subheading {
   font-family: sans-serif;
   font-size: 1.6rem;
-  color: var(--color-slate-300);
+  color: var(--color-gray-300);
 }
 
 .home-monsters-section {
@@ -52,23 +52,23 @@ body {
   font-family: sans-serif;
   font-size: 1.2rem;
   font-weight: normal;
-  color: var(--color-slate-300);
+  color: var(--color-gray-300);
 }
 
 .home-monsters-input {
   padding: 0 8px;
   font-family: sans-serif;
   font-weight: bold;
-  background-color: var(--color-slate-800);
-  border: 2px solid var(--color-slate-600);
+  background-color: var(--color-gray-800);
+  border: 2px solid var(--color-gray-600);
   border-radius: 4px;
-  color: var(--color-slate-100);
+  color: var(--color-gray-100);
   width: 100%;
   height: 2rem;
 }
 
 .home-monsters-input::placeholder {
-  color: var(--color-slate-400);
+  color: var(--color-gray-400);
   opacity: 1;
 }
 
@@ -80,16 +80,16 @@ body {
   font-family: sans-serif;
   font-size: 1rem;
   padding: 8px;
-  background: var(--color-slate-700);
+  background: var(--color-gray-700);
   border-radius: 4px;
-  color: var(--color-slate-100);
+  color: var(--color-gray-100);
 }
 
 .page-heading {
   font-family: sans-serif;
   font-size: 1.1rem;
   font-weight: normal;
-  color: var(--color-slate-300);
+  color: var(--color-gray-300);
 }
 
 .class-page-container {
@@ -118,7 +118,6 @@ body {
   align-items: center;
   justify-content: center;
   border: 0;
-  color: var(--color-slate-50);
   background: var(--color-primary);
   cursor: pointer;
   font-size: 20px;
@@ -137,7 +136,7 @@ body {
 
 .class-page-class-name {
   font-family: sans-serif;
-  color: var(--color-slate-50);
+  color: var(--color-white);
 }
 
 .class-page-select-button, .class-page-selected-indicator {
@@ -161,15 +160,15 @@ body {
 }
 
 .class-page-selected-indicator {
-  background: var(--color-slate-950);
-  border: 2px solid var(--color-slate-900);
-  color: var(--color-slate-400);
+  background: var(--color-gray-950);
+  border: 2px solid var(--color-gray-900);
+  color: var(--color-gray-400);
 }
 
 :root {
   --color-primary-lightest: var(--color-blue-50);
-  --color-primary-light: var(--color-blue-400);
-  --color-primary: var(--color-blue-500);
+  --color-primary-light: var(--color-blue-500);
+  --color-primary: var(--color-blue-600);
   --color-primary-dark: var(--color-blue-950);
 
   --color-red-50: oklch(97.1% 0.013 17.38);
