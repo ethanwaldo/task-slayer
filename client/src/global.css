@@ -300,7 +300,9 @@ body {
 .class-page-main {
   display: flex;
   align-items: center;
-  column-gap: 24px;
+  justify-content: space-between;
+  width: 340px;
+  max-width: 100%;
 }
 
 .class-page-class-image {
@@ -317,7 +319,6 @@ body {
   border: 0;
   background: var(--color-primary);
   cursor: pointer;
-  font-size: 20px;
   width: 40px;
   height: 40px;
   border-radius: 20px;
