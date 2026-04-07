@@ -36,12 +36,21 @@
 const classes = /** @type {const} */ (["Warrior", "Scholar", "Bard", "Monk"]);
 
 const monsterKinds = /** @type {const} */ ([
+  "Demon",
   "Dragon",
+  "Cyclops",
+  "Goblin",
   "Golem",
+  "Gorgon",
   "Hydra",
+  "Kraken",
+  "Mummy",
   "Serpent",
   "Skeleton",
   "Vampire",
+  "Werewolf",
+  "Witch",
+  "Wraith",
   "Zombie",
 ]);
 
