@@ -63,7 +63,7 @@ function Home() {
               className="home-monsters-input"
               onChange={onChangeTask}
               value={task}
-              placeholder="example: do the laundry"
+              placeholder="try: do the laundry"
             />
           </form>
           <div className="home-monsters">

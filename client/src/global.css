@@ -229,7 +229,8 @@ body {
 }
 
 .home-monsters-input::placeholder {
-  color: var(--color-slate-400);
+  font-weight: bold;
+  color: var(--color-gray-500);
   opacity: 1;
 }
 
