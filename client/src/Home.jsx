@@ -57,6 +57,7 @@ function Home() {
   }
   return (
     <>
+      <title>Task Slayer</title>
       <HomeHeader />
       <div className="hero">
         <img className="hero-logo" alt="logo" src={logo} />

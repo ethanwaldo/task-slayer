@@ -43,6 +43,7 @@ function ClassPage() {
   const formattedClass = `The ${displayedClass}`;
   return (
     <>
+      <title>Select Class - Task Slayer</title>
       <Header />
       <div className="class-page-container">
         <h1 className="page-heading">Select Class</h1>
