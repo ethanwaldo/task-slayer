@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { monsterName, randomMonsterKind } from "./types";
-import HomeHeader from "./HomeHeader";
 import logo from "./assets/logo.png";
+import MiniNav from "./MiniNav";
+import Nav from "./Nav";
 /** @import { Monster } from "./types" */
 
 function Home() {
@@ -58,7 +59,7 @@ function Home() {
   return (
     <>
       <title>Task Slayer</title>
-      <HomeHeader />
+      <Header />
       <div className="hero">
         <img className="hero-logo" alt="logo" src={logo} />
         <div className="hero-heading">Task Slayer</div>
@@ -83,6 +84,19 @@ function Home() {
           </div>
         </div>
       </div>
+    </>
+  );
+}
+
+function Header() {
+  return (
+    <>
+      <header className="home-header">
+        <Nav />
+      </header>
+      <header className="home-mini-header">
+        <MiniNav />
+      </header>
     </>
   );
 }

@@ -8,22 +8,35 @@ body {
   background: var(--color-slate-950);
 }
 
-.home-header {
+.home-header, .class-page-header {
   display: flex;
+  align-items: center;
+  padding: 0 16px;
+  height: 56px;
+}
+
+.home-header {
+  justify-content: end;
+  border-bottom: 2px solid transparent;
+}
+
+.class-page-header {
+  justify-content: space-between;
+  border-bottom: 2px solid var(--color-slate-900);
+}
+
+.home-mini-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* display: flex; */
+  display: none;
   align-items: center;
   justify-content: end;
   border-bottom: 2px solid transparent;
   padding: 0 16px;
   height: 56px;
-}
-
-.class-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 2px solid var(--color-slate-900);
-  padding: 0 16px;
-  height: 56px;
+  width: 100%;
 }
 
 .header-link-container {
@@ -74,7 +87,7 @@ body {
   text-decoration: none;
 }
 
-.mini-header {
+.class-page-mini-header {
   position: absolute;
   top: 0;
   left: 0;
@@ -88,27 +101,13 @@ body {
   width: 100%;
 }
 
-.mini-header-link {
+.class-page-mini-header-link {
   /* display: none; */
   display: flex;
   text-decoration: none;
 }
 
-.mini-home-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  /* display: flex; */
-  display: none;
-  align-items: center;
-  justify-content: end;
-  border-bottom: 2px solid transparent;
-  padding: 0 16px;
-  height: 56px;
-  width: 100%;
-}
-
-.mini-nav-container {
+.mini-nav {
   display: flex;
   /* display: none; */
   flex-direction: column;
@@ -119,10 +118,10 @@ body {
 }
 
 @media screen and (max-width: 700px) {
-  .home-header, .class-header {
+  .home-header, .class-page-header {
     display: none;
   }
-  .mini-header, .mini-home-header {
+  .class-page-mini-header, .home-mini-header {
     display: flex;
   }
 }
@@ -138,7 +137,7 @@ body {
   width: 28px;
 }
 
-.mini-nav {
+.mini-nav-links {
   position: absolute;
   top: 56px;
   display: flex;
@@ -271,19 +270,19 @@ body {
   }
 }
 
-.header-page-heading, .page-heading {
+.class-page-heading, .class-page-mini-heading {
   font-family: sans-serif;
   font-size: 1.1rem;
   font-weight: normal;
   color: var(--color-gray-300);
 }
 
-.page-heading {
+.class-page-mini-heading {
   display: none;
 }
 
 @media screen and (max-width: 700px) {
-  .page-heading {
+  .class-page-mini-heading {
     display: block;
   }
 }

@@ -5,7 +5,10 @@ import bardImage from "./assets/bard.webp";
 import monkImage from "./assets/monk.jpg";
 import chevronLeft from "./assets/chevron-left.svg";
 import { defaultClass, isClass, nextClass, prevClass } from "./types";
-import Header from "./Header";
+import logo from "./assets/logo.png";
+import { Link } from "react-router-dom";
+import MiniNav from "./MiniNav";
+import Nav from "./Nav";
 /** @import { Class } from "./types" */
 
 function ClassPage() {
@@ -46,7 +49,7 @@ function ClassPage() {
       <title>Select Class - Task Slayer</title>
       <Header />
       <div className="class-page-container">
-        <h1 className="page-heading">Select Class</h1>
+        <h1 className="class-page-mini-heading">Select Class</h1>
         <div className="class-page-main">
           <button onClick={onClickPrevClass} className="class-page-change-class-button">
             <img alt="left arrow" src={chevronLeft}></img>
@@ -68,17 +71,26 @@ function ClassPage() {
   );
 }
 
-/**
- * 
- * @param {Class} class_ 
- */
-function imageSrcFromClass(class_) {
-  switch (class_) {
-    case "Warrior": return warriorImage;
-    case "Scholar": return scholarImage;
-    case "Bard": return bardImage;
-    case "Monk": return monkImage;
-  }
+function Header() {
+  return (
+    <>
+      <header className="class-page-header">
+        <div className="header-link-container">
+          <Link className="header-link" to="/">
+            <img className="logo" alt="logo" src={logo} />
+          </Link>
+        </div>
+        <h1 className="class-page-heading">Select Class</h1>
+        <Nav />
+      </header>
+      <header className="class-page-mini-header">
+        <Link className="mini-header-link" to="/">
+          <img className="logo" alt="logo" src={logo} />
+        </Link>
+        <MiniNav />
+      </header>
+    </>
+  );
 }
 
 /**
@@ -94,6 +106,19 @@ function ClassImage({ class_ }) {
       }
     </>
   );
+}
+
+/**
+ * 
+ * @param {Class} class_ 
+ */
+function imageSrcFromClass(class_) {
+  switch (class_) {
+    case "Warrior": return warriorImage;
+    case "Scholar": return scholarImage;
+    case "Bard": return bardImage;
+    case "Monk": return monkImage;
+  }
 }
 
 export default ClassPage;

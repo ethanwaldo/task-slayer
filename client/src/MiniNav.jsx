@@ -39,7 +39,7 @@ function MiniNav() {
 
   return (
     <>
-      <div className="mini-nav-container">
+      <div className="mini-nav">
         <button className="menu-button" onClick={onMenuButtonClick} onMouseDown={onMenuButtonMouseDown}>
           {
             menuOpened ?
@@ -49,7 +49,7 @@ function MiniNav() {
         </button>
         {
           menuOpened ?
-            <nav className="mini-nav" onMouseDown={onMiniNavMouseDown}>
+            <nav className="mini-nav-links" onMouseDown={onMiniNavMouseDown}>
               <Link className="mini-nav-link" to="/" onClick={onMiniNavLinkClick}>Home</Link>
               <Link className="mini-nav-link" to="/class" onClick={onMiniNavLinkClick}>Class</Link>
             </nav> :
