@@ -29,12 +29,20 @@ function Home() {
       }
     }
 
+    let monsterKind = randomMonsterKind();
+    for (let i = 0; i < 9; i++) {
+      if (monsters.some(m => m.kind === monsterKind)) {
+        monsterKind = randomMonsterKind();
+      } else {
+        break;
+      }
+    }
     setMonsters([
       ...monsters,
       {
         id,
         taskName,
-        kind: randomMonsterKind(),
+        kind: monsterKind,
         maxHp: 10,
         currentHp: 0,
         task,
