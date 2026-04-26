@@ -1,4 +1,4 @@
-#root {
+/* #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
@@ -39,4 +39,34 @@
 
 .read-the-docs {
   color: #888;
+} */
+
+.app{
+  min-height: 100vh;
+  background: #242424;
+  color: white;
+}
+
+.navbar{
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid #444;
+}
+
+.navbar button {
+  background: #1a1a1a;
+  color: white;
+  border: 1px solid #555;
+  padding: 0.6rem 1rem;
+  border-radius 8px;
+  cursor: pointer;
+}
+
+.navbar button:hover{
+  border-color: #646cff;
+}
+
+.page{
+  padding: 2rem;
 }
