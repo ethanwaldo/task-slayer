@@ -40,6 +40,8 @@
 .read-the-docs {
   color: #888;
 } */
+/* 
+// rem = root em; 1rem = 16px, just cleaner to code.
 
 .app{
   min-height: 100vh;
@@ -69,4 +71,4 @@
 
 .page{
   padding: 2rem;
-}
+} */

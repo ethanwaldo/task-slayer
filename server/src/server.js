@@ -1,18 +1,35 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
+import dotenv from 'dotenv';
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import { isClass } from './types';
+/** @import { Class, Guest, Session, User } from "./types" */
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+const sessionCookieName = "session";
+const sessionMaxAge = 7 * 24 * 60 * 60 * 1000;
+
+/** @type {express.CookieOptions} */
+const sessionCookieOptions = {
+  httpOnly: true,
+  secure: true,
+  sameSite: "strict",
+  maxAge: sessionMaxAge,
+};
 
 // Middleware
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
+app.use(cookieParser());
 
 // Routes
 app.get('/api/health', (req, res) => {
@@ -20,11 +37,61 @@ app.get('/api/health', (req, res) => {
 });
 
 // AI Test Route (Person D)
-const aiService = require('./services/aiService');
+import { generateMonsterData } from './services/aiService';
+import { generateGuest, getUserBySessionId } from './user';
+import { getProfile } from './profile';
+import dataFile from './dataFile';
 app.post('/api/summon', async (req, res) => {
   const { description } = req.body;
-  const monster = await aiService.generateMonsterData(description);
+  const monster = await generateMonsterData(description);
   res.json(monster);
+});
+
+app.get('/api/profile', async (req, res) => {
+  const sessionId = req.cookies[sessionCookieName];
+  if (sessionId !== undefined) {
+    const foundUser = await getUserBySessionId(sessionId);
+    if (foundUser) {
+      res.json({
+        result: "success",
+        profile: getProfile(foundUser),
+      });
+    } else {
+      res.json({ result: "session expired" });
+    }
+  } else {
+    const guest = await generateGuest();
+    await dataFile.addUser(guest);
+    res
+      .cookie(sessionCookieName, guest.session.id, sessionCookieOptions)
+      .json({ result: "success", profile: getProfile(guest)});
+  }
+});
+
+app.post("/api/class", async (req, res) => {
+  const class_ = req.body.class_;
+  if (!isClass(class_)) {
+    res.json({ result: "invalid class" });
+    return;
+  }
+  const sessionId = req.cookies[sessionCookieName];
+  if (sessionId !== undefined) {
+    const foundUser = await getUserBySessionId(sessionId);
+    if (foundUser !== undefined) {
+      foundUser.class_ = class_;
+      await dataFile.updateUser(foundUser);
+      res.json({ result: "success", profile: getProfile(foundUser) });
+    } else {
+      res.json({ result: "session expired" });
+    }
+  } else {
+    const guest = await generateGuest();
+    guest.class_ = class_;
+    await dataFile.addUser(guest);
+    res
+      .cookie(sessionCookieName, guest.session.id, sessionCookieOptions)
+      .json({ result: "success", profile: getProfile(guest) });
+  }
 });
 
 // Start Server

@@ -4,7 +4,7 @@
  */
 
 // Mock implementation for initial setup
-const generateMonsterData = async (taskDescription) => {
+export const generateMonsterData = async (taskDescription) => {
     console.log(`Generating AI data for task: ${taskDescription}`);
 
     // In production, this will call Google Gemini or OpenAI
@@ -14,8 +14,4 @@ const generateMonsterData = async (taskDescription) => {
         hp: 100,
         type: "Mental"
     };
-};
-
-module.exports = {
-    generateMonsterData
 };
