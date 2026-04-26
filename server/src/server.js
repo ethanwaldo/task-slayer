@@ -94,6 +94,38 @@ app.post("/api/class", async (req, res) => {
   }
 });
 
+// Getting saved users from data file
+app.get("/api/leaderboard", async (req, res) => {
+  try {
+    const users = await dataFile.getUsers();
+
+    // Convert user objects into data for leaderboard page
+    const leaderboard = users
+    .map((user) => ({
+      id: user.session.id,
+      name: user.name ?? "Guest Slayer",
+      classType: user.class_ ?? "Unselected",
+      exp: user.exp ?? 0,
+    }))
+
+    .sort((a, b) => b.exp - a.exp); // Sort users from highest -> lowest
+
+    // Formatted leaderboard data is sent to frontend
+    res.json({
+      result: "success",
+      leaderboard,
+    });
+  }
+  // Server-side debugging & frontend
+  catch (error){
+    console.error("Failed to load leaderboard:", error);
+    res.status(500).json({
+      result: "error",
+      message: "Failed to load leaderboard",
+    });
+  }
+});
+
 // Start Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
