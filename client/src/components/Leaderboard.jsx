@@ -1,19 +1,19 @@
 import Nav from "../Nav";
 import { useEffect, useState } from "react";
 
-function Leaderboard() { // CURRENT MOCK DATA TO GET SOMETHING SHOWING
-    const [players, setPlayers] = useState([]);
-    const [loading, setLoading] = useState(true);
+function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
+    const [players, setPlayers] = useState([]); // Checks if leaderboard data returned from backend
+    const [loading, setLoading] = useState(true); // Tracks if leaderboard request is loading
 
-    useEffect(() => {
+    useEffect(() => { // Get leaderboard data
         fetch("http://localhost:5000/api/leaderboard")
         .then((res) => res.json())
         .then((data) => {
-            setPlayers(data.leaderboard || []);
+            setPlayers(data.leaderboard || []); // store from api response else output empty array if no data returned
             setLoading(false);
         })
         .catch((error) => {
-            console.error("Failed to fetch leaderboard:", error);
+            console.error("Failed to fetch leaderboard:", error); // debugging errors
             setLoading(false);
         });
     }, []);
@@ -42,6 +42,8 @@ function Leaderboard() { // CURRENT MOCK DATA TO GET SOMETHING SHOWING
                     <span>Experience</span>
                 </div>
 
+
+                {/* Show loading while waiting for backend response */}
                 {loading && (
                     <div className="leaderboard-row">
                         <span></span>
@@ -49,6 +51,7 @@ function Leaderboard() { // CURRENT MOCK DATA TO GET SOMETHING SHOWING
                     </div>
                 )}
 
+                {/* Empty state output if request is successful but no users on leaderboard yet */}
                 {!loading && players.length === 0 && (
                     <div className="leaderboard-row">
                         <span></span>
@@ -56,6 +59,7 @@ function Leaderboard() { // CURRENT MOCK DATA TO GET SOMETHING SHOWING
                     </div>
                 )}
 
+                {/* Render each player in this format on the leaderboard */}
                 {!loading && players.map((player, index) => (
                     <div className="leaderboard-row" key={player.id}>
                         <span className="leaderboard-rank">#{index+1}</span>
