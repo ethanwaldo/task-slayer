@@ -1,8 +1,19 @@
 /**
+ * @typedef {object} Stats
+ * @property {number} STR
+ * @property {number} INT
+ * @property {number} AGI
+ * @property {number} CON
+ * @property {number} CHA
+ */
+
+/**
  * @typedef {object} Profile
  * @property {string} displayName
  * @property {Class} class_
  * @property {Monster[]} monsters
+ * @property {number} exp
+ * @property {Stats} stats
  */
 
 /**
@@ -14,6 +25,8 @@
  * @property {Session} session
  * @property {Class} class_
  * @property {Monster[]} monsters
+ * @property {number} [exp]
+ * @property {Stats} [stats]
  */
 
 /**
@@ -33,6 +46,8 @@
  * @property {Level} level
  * @property {number} currentHp
  * @property {number} maxHp
+ * @property {string} [primaryStat]
+ * @property {string} [id]
  */
 
 /**
@@ -43,7 +58,7 @@
  * @exports {User}
  */
 
-const classes = /** @type {const} */ (["Warrior", "Scholar", "Bard", "Monk"]);
+const classes = /** @type {const} */ (["Warrior", "Scholar", "Bard", "Monk", "Rogue"]);
 
 /**
  * 
