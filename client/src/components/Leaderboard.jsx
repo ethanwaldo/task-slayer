@@ -1,76 +1,71 @@
-import Nav from "../Nav";
 import { useEffect, useState } from "react";
 
-function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
-    const [players, setPlayers] = useState([]); // Checks if leaderboard data returned from backend
-    const [loading, setLoading] = useState(true); // Tracks if leaderboard request is loading
+function Leaderboard() {
+    const [players, setPlayers] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    useEffect(() => { // Get leaderboard data
+    useEffect(() => {
         fetch("http://localhost:5000/api/leaderboard")
         .then((res) => res.json())
         .then((data) => {
-            setPlayers(data.leaderboard || []); // store from api response else output empty array if no data returned
+            setPlayers(data.leaderboard || []);
             setLoading(false);
         })
         .catch((error) => {
-            console.error("Failed to fetch leaderboard:", error); // debugging errors
+            console.error("Failed to fetch leaderboard:", error);
             setLoading(false);
         });
     }, []);
 
     return (
-        // NAV BAR
-        <>
-        <header className="home-header">
-            <Nav />
+        <div className="leaderboard-container pt-16 sm:pt-8 w-full">
+            <title>Leaderboard - Task Slayer</title>
+            
+            <header className="leaderboard-header" style={{ textAlign: 'center' }}>
+                <h1>Leaderboard</h1>
+                <p style={{ color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '8px' }}>
+                    Top Slayers Ranked by Experience
+                </p>
             </header>
 
-        {/* LEADERBOARD CONTEXT */}
-        <main className="leaderboard-page">
-            <section className="leaderboard-hero">
-                <h1 className="leaderboard-heading">Leaderboard</h1>
-                <p className="leaderboard-subheading">
-                    Top slayers ranked by experience earned.
-                </p>
-            </section>
-
-            <section className="leaderboard-panel">
-                <div className="leaderboard-header-row">
+            <div className="leaderboard-card mx-6">
+                <div className="leaderboard-row header">
                     <span>Rank</span>
                     <span>Slayer</span>
-                    <span>Class</span>
-                    <span>Experience</span>
+                    <span className="leaderboard-class">Class</span>
+                    <span style={{ textAlign: 'right' }}>Experience</span>
                 </div>
 
-
-                {/* Show loading while waiting for backend response */}
                 {loading && (
                     <div className="leaderboard-row">
                         <span></span>
                         <span>Loading leaderboard...</span>
+                        <span className="leaderboard-class"></span>
+                        <span></span>
                     </div>
                 )}
 
-                {/* Empty state output if request is successful but no users on leaderboard yet */}
                 {!loading && players.length === 0 && (
                     <div className="leaderboard-row">
                         <span></span>
                         <span>No slayers ranked yet.</span>
+                        <span className="leaderboard-class"></span>
+                        <span></span>
                     </div>
                 )}
 
-                {/* Render each player in this format on the leaderboard */}
                 {!loading && players.map((player, index) => (
                     <div className="leaderboard-row" key={player.id}>
-                        <span className="leaderboard-rank">#{index+1}</span>
+                        <span className="leaderboard-rank">
+                            {index === 0 ? <span className="material-symbols-outlined" style={{color: "var(--color-gold)"}}>emoji_events</span> : `#${index+1}`}
+                        </span>
                         <span className="leaderboard-name">{player.name}</span>
-                        <span className="leaderboard-class">{player.classType}</span>
-                        <span className="leaderboard-exp">{player.exp}</span>
+                        <span className="leaderboard-class" style={{ color: "var(--color-text-muted)", fontSize: "0.9rem" }}>{player.classType}</span>
+                        <span className="leaderboard-exp">{player.exp} XP</span>
                     </div>
                 ))}
-            </section>
-        </main>
-        </>
+            </div>
+        </div>
     );
 }
 
