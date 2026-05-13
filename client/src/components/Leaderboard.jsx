@@ -6,7 +6,7 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
     const [loading, setLoading] = useState(true); // Tracks if leaderboard request is loading
 
     useEffect(() => { // Get leaderboard data
-        fetch("http://localhost:5000/api/leaderboard")
+        fetch("/api/leaderboard")
         .then((res) => res.json())
         .then((data) => {
             setPlayers(data.leaderboard || []); // store from api response else output empty array if no data returned
@@ -63,8 +63,13 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
                 {!loading && players.map((player, index) => (
                     <div className="leaderboard-row" key={player.id}>
                         <span className="leaderboard-rank">#{index+1}</span>
-                        <span className="leaderboard-name">{player.name}</span>
-                        <span className="leaderboard-class">{player.classType}</span>
+                        <div className="leaderboard-name-container">
+                            <div className="leaderboard-name">{player.name}</div>
+                            <div style={{ fontSize: "0.75rem", color: "var(--color-gray-400)", fontWeight: "normal" }}>
+                                {player.title}
+                            </div>
+                        </div>
+                        <span className="leaderboard-class">{player.classType} (Lvl {player.level})</span>
                         <span className="leaderboard-exp">{player.exp}</span>
                     </div>
                 ))}
