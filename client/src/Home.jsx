@@ -8,49 +8,45 @@ import Nav from "./Nav";
 function Home() {
   const [task, setTask] = useState("");
   const [monsters, setMonsters] = useState(/** @type {Monster[]} */ ([]));
+  const [loading, setLoading] = useState(false);
 
   /** @type {React.SubmitEventHandler<HTMLFormElement>} */
-  function onSubmitTask(e) {
+  async function onSubmitTask(e) {
     e.preventDefault();
-
-    const words = task.trim().split(" ");
-    if (words.length === 0) {
-      return;
+    if (task.trim().length === 0) return;
+    
+    setLoading(true);
+    try {
+      const res = await fetch("/api/summon", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ description: task })
+      });
+      const data = await res.json();
+      
+      let id = monsters.length > 0 ? Math.max(...monsters.map(m => m.id)) + 1 : 0;
+      
+      setMonsters([
+        ...monsters,
+        {
+          id,
+          taskName: data.name,
+          flavorText: data.flavorText,
+          imageUrl: data.imageUrl,
+          primaryStat: data.primaryStat || "INT",
+          kind: data.type || "Anomaly",
+          task: task,
+          level: 1,
+          currentHp: 10,
+          maxHp: 10
+        }
+      ]);
+      setTask("");
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
     }
-    const lastWord = words[words.length - 1];
-    if (lastWord.length === 0) {
-      return;
-    }
-    const taskName = lastWord[0].toUpperCase() + lastWord.slice(1);
-
-    let id = monsters.length;
-    for (const m of monsters) {
-      if (m.id >= id) {
-        id = m.id + 1;
-      }
-    }
-
-    let monsterKind = randomMonsterKind();
-    for (let i = 0; i < 9; i++) {
-      if (monsters.some(m => m.kind === monsterKind)) {
-        monsterKind = randomMonsterKind();
-      } else {
-        break;
-      }
-    }
-    setMonsters([
-      ...monsters,
-      {
-        id,
-        taskName,
-        kind: monsterKind,
-        maxHp: 10,
-        currentHp: 0,
-        task,
-        level: 10
-      }
-    ]);
-    setTask("");
   }
   /** @type {React.ChangeEventHandler<HTMLInputElement, HTMLInputElement>} */
   function onChangeTask(e) {
@@ -74,18 +70,34 @@ function Home() {
               onChange={onChangeTask}
               value={task}
               placeholder="try: do the laundry"
+              disabled={loading}
             />
           </form>
+          {loading && <div style={{ color: "var(--color-primary)", marginTop: "12px", textAlign: "center", fontWeight: "bold" }}>Summoning AI Monster...</div>}
           <div className="home-monsters">
             {monsters.map(m => {
-              const name = monsterName(m);
               return (
-                <div className="home-monster" key={m.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <span>{name} - {m.task}</span>
+                <div className="home-monster" key={m.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "16px", flex: 1 }}>
+                    {m.imageUrl ? (
+                      <img src={m.imageUrl} alt={m.taskName} style={{ width: "64px", height: "64px", borderRadius: "8px", objectFit: "cover" }} />
+                    ) : (
+                      <div style={{ width: "64px", height: "64px", background: "rgba(0,0,0,0.2)", borderRadius: "8px" }} />
+                    )}
+                    <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                      <div style={{ fontWeight: "bold", fontSize: "1.1rem" }}>{m.taskName} <span style={{ fontSize: "0.7rem", padding: "2px 4px", background: "rgba(0,0,0,0.2)", borderRadius: "4px" }}>{m.primaryStat || m.kind}</span></div>
+                      {m.flavorText && <div style={{ fontSize: "0.85rem", fontStyle: "italic", opacity: 0.8 }}>"{m.flavorText}"</div>}
+                      <div style={{ fontSize: "0.9rem" }}>Task: {m.task}</div>
+                    </div>
+                  </div>
                   <button 
                     onClick={() => {
                       setMonsters(monsters.filter(monster => monster.id !== m.id));
-                      fetch("/api/quest/complete", { method: "POST" })
+                      fetch("/api/quest/complete", { 
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ stat: m.primaryStat })
+                      })
                         .then(res => res.json())
                         .then(data => {
                           if (data.result === "success") {

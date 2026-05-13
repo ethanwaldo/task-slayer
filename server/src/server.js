@@ -146,7 +146,9 @@ app.post("/api/quest/complete", async (req, res) => {
   }
 
   const statsList = ["STR", "AGI", "INT", "CON", "CHA"];
-  const randomStat = statsList[Math.floor(Math.random() * statsList.length)];
+  const randomStat = req.body.stat && statsList.includes(req.body.stat) 
+    ? req.body.stat 
+    : statsList[Math.floor(Math.random() * statsList.length)];
   let statGain = 1;
 
   const c = foundUser.class_;
