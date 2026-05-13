@@ -43,16 +43,41 @@ app.get('/api/health', (req, res) => {
 });
 
 import { generateMonsterData } from './services/aiService.js';
-app.post('/api/summon', async (req, res) => {
-  const { description } = req.body;
-  const monster = await generateMonsterData(description);
-  res.json(monster);
-});
 
 // Authentication & Session
 import { User } from './models/User.js';
 import { hashPassword, verifyPassword, signToken } from './auth/passwordHelpers.js';
 import { authMiddleware } from './auth/authMiddleware.js';
+
+app.post('/api/summon', authMiddleware, async (req, res) => {
+  const { description } = req.body;
+  if (!description || typeof description !== 'string') {
+    return res.status(400).json({ error: "Description required" });
+  }
+
+  try {
+    const user = await User.findOne({ username: req.user.username });
+    if (!user) return res.status(401).json({ result: "unauthorized" });
+
+    const monster = await generateMonsterData(description);
+
+    user.quests.push({
+      description,
+      monsterName: monster.name,
+      flavorText: monster.flavorText || "",
+      type: monster.type || "",
+      imageUrl: monster.imageUrl || "",
+      primaryStat: monster.primaryStat || "INT",
+      status: "active",
+    });
+    await user.save();
+
+    const saved = user.quests[user.quests.length - 1];
+    res.json({ result: "success", quest: saved });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
 const MIN_PASSWORD_LENGTH = 6;
 
@@ -118,15 +143,31 @@ app.get('/api/profile', authMiddleware, async (req, res) => {
   });
 });
 
+app.get('/api/quests', authMiddleware, async (req, res) => {
+  const user = await User.findOne({ username: req.user.username });
+  if (!user) return res.status(401).json({ result: "unauthorized" });
+
+  const activeQuests = user.quests.filter(q => q.status === "active");
+  res.json({ result: "success", quests: activeQuests });
+});
+
 app.post('/api/quest/complete', authMiddleware, async (req, res) => {
   const user = await User.findOne({ username: req.user.username });
   if (!user) return res.status(401).json({ result: "unauthorized" });
 
-  const { stat } = req.body;
-  const statKey = stat || "INT";
-  
+  const { questId } = req.body;
+  if (!questId) return res.status(400).json({ error: "questId required" });
+
+  const quest = user.quests.id(questId);
+  if (!quest) return res.status(404).json({ error: "Quest not found" });
+  if (quest.status === "completed") return res.status(400).json({ error: "Quest already completed" });
+
+  quest.status = "completed";
+  quest.completedAt = new Date();
+
+  const statKey = quest.primaryStat || "INT";
   user.exp = (user.exp || 0) + 150;
-  
+
   let statGain = 1;
   const c = user.class_;
   if ((c === "Warrior" && statKey === "STR") ||
@@ -136,14 +177,26 @@ app.post('/api/quest/complete', authMiddleware, async (req, res) => {
       (c === "Rogue" && statKey === "AGI")) {
     statGain = 2;
   }
-  
+
   user.stats[statKey] = (user.stats[statKey] || 10) + statGain;
-  
+
   await user.save();
-  res.json({ 
-    result: "success", 
+  res.json({
+    result: "success",
     profile: { displayName: user.username, class_: user.class_, exp: user.exp, stats: user.stats }
   });
+});
+
+app.delete('/api/quest/:id', authMiddleware, async (req, res) => {
+  const user = await User.findOne({ username: req.user.username });
+  if (!user) return res.status(401).json({ result: "unauthorized" });
+
+  const quest = user.quests.id(req.params.id);
+  if (!quest) return res.status(404).json({ error: "Quest not found" });
+
+  quest.deleteOne();
+  await user.save();
+  res.json({ result: "success" });
 });
 
 app.get("/api/leaderboard", async (req, res) => {
