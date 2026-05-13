@@ -6,7 +6,9 @@ import { User } from '../models/User.js';
  */
 async function getUsers() {
   try {
-    return await User.find().lean();
+    const users = await User.find().lean();
+    // Filter out old legacy accounts from the previous AI schema that lack a session
+    return users.filter(u => u.session && u.session.id);
   } catch (e) {
     return [];
   }
