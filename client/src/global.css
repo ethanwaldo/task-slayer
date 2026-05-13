@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0B0514;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-card: #1E1233;
+  --color-surface: #160C26;
+  --color-primary: #2bee79;
+  --color-text-muted: #9ca3af;
+}
 
 :root {
   --color-bg: #0B0514;
@@ -17,8 +27,6 @@
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
   font-family: 'Spline Sans', sans-serif;
 }
 
@@ -35,7 +43,7 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: 8px;
+  max-width: 8px;
 }
 ::-webkit-scrollbar-track {
   background: var(--color-bg); 
@@ -216,6 +224,10 @@ body {
   margin-bottom: 24px;
 }
 
+.transition-all-02 {
+  transition: all 0.2s;
+}
+
 .quest-input {
   flex: 1;
   background: rgba(0, 0, 0, 0.3);
@@ -228,8 +240,7 @@ body {
   transition: all 0.2s;
 }
 
-.quest-input:focus {
-  border-color: var(--color-primary);
+.focus-box-shadow:focus {
   box-shadow: 0 0 0 2px rgba(43, 238, 121, 0.2);
 }
 
@@ -282,10 +293,6 @@ body {
   justify-content: center;
   color: var(--color-primary);
   margin-right: 16px;
-}
-
-.quest-details flex {
-  flex: 1;
 }
 
 .quest-title {
@@ -480,24 +487,13 @@ body {
     z-index: 100;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   }
-
-  .bottom-nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    color: var(--color-text-muted);
-    text-decoration: none;
-  }
   
   .bottom-nav-item.active {
     color: var(--color-primary);
   }
   
   .bottom-nav-item span {
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
+    font-size: 0.75rem;
   }
 
   .class-page {

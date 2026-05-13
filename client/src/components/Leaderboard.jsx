@@ -18,7 +18,7 @@ function Leaderboard() {
     }, []);
 
     return (
-        <div className="leaderboard-container">
+        <div className="leaderboard-container pt-16 sm:pt-8 w-full">
             <title>Leaderboard - Task Slayer</title>
             
             <header className="leaderboard-header" style={{ textAlign: 'center' }}>
@@ -28,7 +28,7 @@ function Leaderboard() {
                 </p>
             </header>
 
-            <div className="leaderboard-card">
+            <div className="leaderboard-card mx-6">
                 <div className="leaderboard-row header">
                     <span>Rank</span>
                     <span>Slayer</span>

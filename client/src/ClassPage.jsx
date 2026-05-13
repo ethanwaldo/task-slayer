@@ -18,7 +18,7 @@ function ClassPage() {
   }, []);
 
   return (
-    <div className="class-page">
+    <div className="class-page pt-16 sm:pt-8 pb-8 px-6">
       <title>Your Hero - Task Slayer</title>
       
       <div className="class-preview">

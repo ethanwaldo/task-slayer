@@ -38,71 +38,63 @@ function Login({ onLogin }) {
   }
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", background: "var(--color-bg)", color: "var(--color-text)", padding: "20px" }}>
-      <title>{isRegistering ? "Register" : "Login"} - Task Slayer</title>
-      <div style={{ background: "rgba(255,255,255,0.05)", padding: "40px", borderRadius: "16px", maxWidth: "400px", width: "100%", border: "1px solid var(--color-border)" }}>
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <span className="material-symbols-outlined text-primary text-6xl">swords</span>
-          <h1 style={{ fontSize: "2rem", marginTop: "16px" }}>Task Slayer</h1>
-          <p style={{ color: "var(--color-text-muted)" }}>{isRegistering ? "Forge your destiny." : "Welcome back, slayer."}</p>
-        </div>
-
-        {error && <div style={{ background: "rgba(255,0,0,0.1)", color: "red", padding: "12px", borderRadius: "8px", marginBottom: "16px", textAlign: "center" }}>{error}</div>}
-
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="bg-[rgba(255,255,255,0.05)] pt-32 sm:pt-12 pb-12 flex flex-col w-full items-center min-h-screen sm:min-h-fit sm:max-w-100 sm:rounded-2xl sm:mt-12 sm:mb-12 sm:border sm:border-border">
+        <title>{isRegistering ? "Register" : "Login"} - Task Slayer</title>
+        <span className="material-symbols-outlined text-primary text-5xl!">swords</span>
+        <h1 className="text-4xl font-bold mt-3">Task Slayer</h1>
+        <div className="text-gray-400 mt-3">{isRegistering ? "Forge your destiny." : "Welcome back, slayer."}</div>
+        <form className="flex flex-col gap-4 mt-4 px-8 items-center w-full max-w-100" onSubmit={handleSubmit}>
           <input
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            style={{ padding: "16px", borderRadius: "8px", border: "1px solid var(--color-border)", background: "rgba(0,0,0,0.2)", color: "white", fontSize: "1.1rem" }}
+            className="w-full p-3 text-lg rounded-lg border border-border bg-[rgba(0,0,0,0.2)] text-white placeholder:text-gray-400"
             required
           />
-
           {isRegistering && (
-            <div style={{ marginTop: "16px" }}>
-              <p style={{ marginBottom: "8px", fontWeight: "bold", color: "var(--color-primary)" }}>Choose Your Archetype</p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+            <>
+              <div className="text-primary font-bold mt-6">Choose your class</div>
+              <div className="flex flex-wrap gap-2">
                 {classOptions.map(c => (
                   <button
-                    key={c}
-                    type="button"
-                    onClick={() => setSelectedClass(c)}
-                    style={{
-                      flex: "1 1 30%",
-                      padding: "12px",
-                      borderRadius: "8px",
-                      border: `1px solid ${selectedClass === c ? "var(--color-primary)" : "var(--color-border)"}`,
-                      background: selectedClass === c ? "rgba(255,215,0,0.1)" : "transparent",
-                      color: selectedClass === c ? "var(--color-primary)" : "white",
-                      cursor: "pointer",
-                      fontWeight: "bold"
-                    }}
-                  >
-                    {c}
-                  </button>
+                      key={c}
+                      type="button"
+                      onClick={() => setSelectedClass(c)}
+                      className="py-2"
+                      style={{
+                        flex: "1 1 30%",
+                        borderRadius: "8px",
+                        border: `1px solid ${selectedClass === c ? "var(--color-primary)" : "var(--color-border)"}`,
+                        background: selectedClass === c ? "rgba(255,215,0,0.1)" : "transparent",
+                        color: selectedClass === c ? "var(--color-primary)" : "white",
+                        cursor: "pointer",
+                        fontWeight: "bold"
+                      }}
+                    >
+                      {c}
+                    </button>
                 ))}
               </div>
-              <div style={{ marginTop: "12px", padding: "12px", background: "rgba(0,0,0,0.2)", borderRadius: "8px", borderLeft: "3px solid var(--color-primary)" }}>
+              <div className="w-full" style={{ marginTop: "12px", padding: "12px", background: "rgba(0,0,0,0.2)", borderRadius: "8px", borderLeft: "3px solid var(--color-primary)" }}>
                 <p style={{ fontSize: "0.9rem", color: "var(--color-text-muted)" }}>
-                  {selectedClass === "Scholar" && <span><strong>Scholar:</strong> Excels in mental tasks. +100% bonus to <strong>INT</strong> (Intelligence) gains.</span>}
-                  {selectedClass === "Warrior" && <span><strong>Warrior:</strong> Excels in physical labor. +100% bonus to <strong>STR</strong> (Strength) gains.</span>}
-                  {selectedClass === "Bard" && <span><strong>Bard:</strong> Excels in social interactions. +100% bonus to <strong>CHA</strong> (Charisma) gains.</span>}
-                  {selectedClass === "Monk" && <span><strong>Monk:</strong> Excels in habits and endurance. +100% bonus to <strong>CON</strong> (Constitution) gains.</span>}
-                  {selectedClass === "Rogue" && <span><strong>Rogue:</strong> Excels in speed and errands. +100% bonus to <strong>AGI</strong> (Agility) gains.</span>}
+                  {selectedClass === "Scholar" && <span><strong>Scholar:</strong> Excels in mental tasks. <br /> +100% bonus to <strong>INT</strong> (Intelligence) gains.</span>}
+                  {selectedClass === "Warrior" && <span><strong>Warrior:</strong> Excels in physical labor. <br /> +100% bonus to <strong>STR</strong> (Strength) gains.</span>}
+                  {selectedClass === "Bard" && <span><strong>Bard:</strong> Excels in social interactions. <br /> +100% bonus to <strong>CHA</strong> (Charisma) gains.</span>}
+                  {selectedClass === "Monk" && <span><strong>Monk:</strong> Excels in habits and endurance. <br /> +100% bonus to <strong>CON</strong> (Constitution) gains.</span>}
+                  {selectedClass === "Rogue" && <span><strong>Rogue:</strong> Excels in speed and errands. <br /> +100% bonus to <strong>AGI</strong> (Agility) gains.</span>}
                 </p>
               </div>
-            </div>
+            </>
           )}
-
-          <button type="submit" style={{ padding: "16px", borderRadius: "8px", background: "var(--color-primary)", color: "var(--color-bg)", fontSize: "1.2rem", fontWeight: "bold", border: "none", cursor: "pointer", marginTop: "16px" }}>
+          <button type="submit" className="w-full py-3 rounded-lg bg-primary text-bg text-lg font-bold cursor-pointer mt-4">
             {isRegistering ? "Create Account" : "Enter the Realm"}
           </button>
         </form>
-
-        <p style={{ textAlign: "center", marginTop: "24px", color: "var(--color-text-muted)", cursor: "pointer" }} onClick={() => setIsRegistering(!isRegistering)}>
+        <div className="text-center mt-6 text-gray-400 cursor-pointer" onClick={() => setIsRegistering(!isRegistering)}>
           {isRegistering ? "Already have an account? Login here." : "New slayer? Register here."}
-        </p>
+        </div>
       </div>
     </div>
   );
