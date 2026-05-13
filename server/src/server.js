@@ -132,6 +132,38 @@ app.get("/api/leaderboard", async (req, res) => {
   }
 });
 
+app.post("/api/quest/complete", async (req, res) => {
+  const sessionId = req.cookies[sessionCookieName];
+  if (!sessionId) return res.status(401).json({ error: "Unauthorized" });
+
+  const foundUser = await getUserBySessionId(sessionId);
+  if (!foundUser) return res.status(401).json({ error: "Session expired" });
+
+  foundUser.exp = (foundUser.exp || 0) + 150;
+
+  if (!foundUser.stats) {
+    foundUser.stats = { STR: 10, AGI: 10, INT: 10, CON: 10, CHA: 10 };
+  }
+
+  const statsList = ["STR", "AGI", "INT", "CON", "CHA"];
+  const randomStat = statsList[Math.floor(Math.random() * statsList.length)];
+  let statGain = 1;
+
+  const c = foundUser.class_;
+  if ((c === "Warrior" && randomStat === "STR") ||
+      (c === "Scholar" && randomStat === "INT") ||
+      (c === "Monk" && randomStat === "CON") ||
+      (c === "Bard" && randomStat === "CHA") ||
+      (c === "Rogue" && randomStat === "AGI")) {
+    statGain = 2; // +100% bonus
+  }
+
+  foundUser.stats[randomStat] += statGain;
+
+  await dataFile.updateUser(foundUser);
+  res.json({ result: "success", exp: foundUser.exp, statGained: randomStat, amount: statGain });
+});
+
 // --- NEW AUTHENTICATION ROUTES ---
 import { User } from './models/User.js';
 

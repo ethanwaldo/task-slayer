@@ -252,6 +252,21 @@ body {
   color: var(--color-slate-100);
 }
 
+.home-slay-button {
+  background: var(--color-red-600);
+  border: 0;
+  color: var(--color-white);
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+.home-slay-button:hover {
+  background: var(--color-red-500);
+}
+
 @media screen and (max-width: 700px) {
   .hero {
     margin-top: 128px;

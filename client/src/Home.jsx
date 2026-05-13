@@ -79,7 +79,26 @@ function Home() {
           <div className="home-monsters">
             {monsters.map(m => {
               const name = monsterName(m);
-              return (<div className="home-monster" key={m.id}>{name} - {m.task}</div>);
+              return (
+                <div className="home-monster" key={m.id} style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span>{name} - {m.task}</span>
+                  <button 
+                    onClick={() => {
+                      setMonsters(monsters.filter(monster => monster.id !== m.id));
+                      fetch("/api/quest/complete", { method: "POST" })
+                        .then(res => res.json())
+                        .then(data => {
+                          if (data.result === "success") {
+                            console.log(`Slayed! Earned 150 EXP and +${data.amount} ${data.statGained}`);
+                          }
+                        });
+                    }}
+                    className="home-slay-button"
+                  >
+                    Slay
+                  </button>
+                </div>
+              );
             })}
           </div>
         </div>
