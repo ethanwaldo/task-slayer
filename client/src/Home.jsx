@@ -10,6 +10,7 @@ function Home() {
   const [monsters, setMonsters] = useState(/** @type {Monster[]} */ ([]));
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState(null);
+  const [slayAlert, setSlayAlert] = useState(null);
 
   useEffect(() => {
     fetchProfile();
@@ -100,6 +101,14 @@ function Home() {
         setProfile(data.profile);
       }
       setMonsters(monsters.filter(m => m.id !== monster.id));
+
+      // show slay alert
+      setSlayAlert({
+        rating: data.slayRating,
+        xp: data.xpEarned,
+        coins: data.coinsEarned
+      });
+      setTimeout(() => setSlayAlert(null), 3000);
     } catch (error) {
       console.error("Failed to slay monster:", error);
     }
@@ -112,6 +121,19 @@ function Home() {
     <>
       <title>Task Slayer</title>
       <Header />
+
+      {slayAlert && (
+        <div className={`slay-alert slay-alert-${slayAlert.rating}`}>
+          {slayAlert.rating === "critical" && "⚔️ "}
+          {slayAlert.rating === "weak" && "💀 "}
+          {slayAlert.rating === "normal" && "🗡️ "}
+          <span style={{ textTransform: "capitalize" }}>{slayAlert.rating} Slay!</span>
+          <div style={{ fontSize: "0.9rem", marginTop: "4px" }}>
+            +{slayAlert.xp} XP • +{slayAlert.coins} Coins
+          </div>
+        </div>
+      )}
+
       <div className="hero">
         <img className="hero-logo" alt="logo" src={logo} />
         <div className="hero-heading">Task Slayer</div>
