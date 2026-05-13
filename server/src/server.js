@@ -182,8 +182,34 @@ app.post('/api/quest/complete', authMiddleware, async (req, res) => {
   quest.completedAt = new Date();
 
   const statKey = quest.primaryStat || "INT";
-  user.exp = (user.exp || 0) + 150;
 
+  // combat roll: compare player stat to monster stat
+  const playerStat = user.stats[statKey] || 10;
+  const monsterStat = (quest.monsterStats && quest.monsterStats[statKey]) || 5;
+
+  let slayRating = "normal";
+  let multiplier = 1;
+  if (playerStat >= monsterStat * 2) {
+    slayRating = "critical";
+    multiplier = 2;
+  } else if (playerStat >= monsterStat) {
+    slayRating = "normal";
+    multiplier = 1.5;
+  } else {
+    slayRating = "weak";
+    multiplier = 1;
+  }
+
+  // rewards scale with difficulty
+  const rewards = { easy: [100, 10], medium: [200, 25], hard: [400, 50], boss: [1000, 150] };
+  const [baseXp, baseCoins] = rewards[quest.difficulty] || rewards.medium;
+  const xpEarned = Math.round(baseXp * multiplier);
+  const coinsEarned = Math.round(baseCoins * multiplier);
+
+  user.exp = (user.exp || 0) + xpEarned;
+  user.coins = (user.coins || 0) + coinsEarned;
+
+  // stat gain (class bonus still applies)
   let statGain = 1;
   const c = user.class_;
   if ((c === "Warrior" && statKey === "STR") ||
@@ -199,7 +225,12 @@ app.post('/api/quest/complete', authMiddleware, async (req, res) => {
   await user.save();
   res.json({
     result: "success",
-    profile: { displayName: user.username, class_: user.class_, exp: user.exp, stats: user.stats }
+    slayRating,
+    xpEarned,
+    coinsEarned,
+    statGained: statKey,
+    statAmount: statGain,
+    profile: { displayName: user.username, class_: user.class_, exp: user.exp, stats: user.stats, coins: user.coins }
   });
 });
 
