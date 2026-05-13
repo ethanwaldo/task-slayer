@@ -222,6 +222,20 @@ app.post('/api/quest/complete', authMiddleware, async (req, res) => {
 
   user.stats[statKey] = (user.stats[statKey] || 10) + statGain;
 
+  // update title based on level
+  const level = Math.floor(user.exp / 1000) + 1;
+  const titles = [
+    [50, "Legendary Slayer"],
+    [20, "Elite Slayer"],
+    [10, "Veteran Slayer"],
+    [5, "Adept Slayer"],
+    [2, "Novice Slayer"],
+    [1, "Apprentice Slayer"]
+  ];
+  for (const [lvl, t] of titles) {
+    if (level >= lvl) { user.title = t; break; }
+  }
+
   await user.save();
   res.json({
     result: "success",
@@ -230,7 +244,7 @@ app.post('/api/quest/complete', authMiddleware, async (req, res) => {
     coinsEarned,
     statGained: statKey,
     statAmount: statGain,
-    profile: { displayName: user.username, class_: user.class_, exp: user.exp, stats: user.stats, coins: user.coins }
+    profile: { displayName: user.username, class_: user.class_, exp: user.exp, stats: user.stats, coins: user.coins, title: user.title, level }
   });
 });
 
@@ -255,6 +269,8 @@ app.get("/api/leaderboard", async (req, res) => {
       name: user.username,
       classType: user.class_,
       exp: user.exp || 0,
+      title: user.title || "Apprentice Slayer",
+      level: Math.floor((user.exp || 0) / 1000) + 1,
     }));
     res.json({ result: "success", leaderboard });
   } catch (error){
