@@ -14,7 +14,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -25,7 +25,7 @@ const sessionMaxAge = 7 * 24 * 60 * 60 * 1000;
 /** @type {express.CookieOptions} */
 const sessionCookieOptions = {
   httpOnly: true,
-  secure: true,
+  secure: process.env.NODE_ENV === "production",
   sameSite: "strict",
   maxAge: sessionMaxAge,
 };
