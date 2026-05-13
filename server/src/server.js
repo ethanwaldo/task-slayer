@@ -132,6 +132,49 @@ app.get("/api/leaderboard", async (req, res) => {
   }
 });
 
+// --- NEW AUTHENTICATION ROUTES ---
+import { User } from './models/User.js';
+
+app.post('/api/auth/register', async (req, res) => {
+  const { username, class_ } = req.body;
+  if (!username || !isClass(class_)) return res.status(400).json({ error: "Invalid username or class" });
+
+  try {
+    const existing = await User.findOne({ "session.id": username });
+    if (existing) return res.status(400).json({ error: "Username taken" });
+
+    const newUser = new User({ 
+      name: username, 
+      session: { id: username, created: Date.now() },
+      class_: class_,
+      exp: 0,
+      monsters: []
+    });
+    await newUser.save();
+    
+    res.cookie(sessionCookieName, username, sessionCookieOptions).json({ result: "success" });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.post('/api/auth/login', async (req, res) => {
+  const { username } = req.body;
+  try {
+    const user = await User.findOne({ "session.id": username });
+    if (!user) return res.status(404).json({ error: "User not found" });
+    
+    res.cookie(sessionCookieName, username, sessionCookieOptions).json({ result: "success" });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+app.post('/api/auth/logout', (req, res) => {
+  res.clearCookie(sessionCookieName).json({ result: "success" });
+});
+// ---------------------------------
+
 // Start Server
 mongoose.connect(process.env.MONGODB_URI).then(() => {
   console.log("Connected to MongoDB Atlas");
