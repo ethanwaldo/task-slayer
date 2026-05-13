@@ -146,6 +146,8 @@ app.post('/api/summon', authMiddleware, async (req, res) => {
       type: monster.type || "",
       imageUrl: monster.imageUrl || "",
       primaryStat: monster.primaryStat || "INT",
+      difficulty: monster.difficulty || "medium",
+      monsterStats: monster.monsterStats || { STR: 5, INT: 5, AGI: 5, CON: 5, CHA: 5 },
       status: "active",
     });
     await user.save();

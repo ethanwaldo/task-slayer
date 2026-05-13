@@ -15,7 +15,7 @@ export const generateMonsterData = async (taskDescription) => {
         const hf = new HfInference(apiKey);
 
         const prompt = `You are a creative monster designer for a dark fantasy game. Return ONLY a raw JSON object and nothing else. No markdown formatting.
-Based on the task "${taskDescription}", create a monster. Also categorize this task into one primary stat: STR (physical/labor), INT (mental/study), AGI (errands/chores), CON (endurance/habits), or CHA (social). Output JSON format: { "name": "Monster Name", "flavorText": "Short funny/scary description", "type": "Monster Type", "visualPrompt": "Detailed visual description for an image generator", "primaryStat": "STR" }`;
+Based on the task "${taskDescription}", create a monster. Categorize the task into one primary stat: STR (physical/labor), INT (mental/study), AGI (errands/chores), CON (endurance/habits), or CHA (social). Judge the difficulty based on how big the task is: "easy" for trivial tasks, "medium" for normal tasks, "hard" for large tasks, "boss" for massive multi-hour tasks. Give the monster a stat block with values from 1-10. Output JSON format: { "name": "Monster Name", "flavorText": "Short funny/scary description", "type": "Monster Type", "visualPrompt": "Detailed visual description for an image generator", "primaryStat": "STR", "difficulty": "medium", "monsterStats": { "STR": 5, "INT": 5, "AGI": 5, "CON": 5, "CHA": 5 } }`;
 
         const textResponse = await hf.chatCompletion({
             model: "Qwen/Qwen2.5-72B-Instruct",
@@ -66,6 +66,8 @@ Based on the task "${taskDescription}", create a monster. Also categorize this t
             type: monsterJSON.type,
             imageUrl: base64Image,
             primaryStat: monsterJSON.primaryStat || "INT",
+            difficulty: monsterJSON.difficulty || "medium",
+            monsterStats: monsterJSON.monsterStats || { STR: 5, INT: 5, AGI: 5, CON: 5, CHA: 5 },
             hp: 100
         };
 
@@ -78,6 +80,8 @@ Based on the task "${taskDescription}", create a monster. Also categorize this t
             hp: 100,
             type: "Anomaly",
             primaryStat: "INT",
+            difficulty: "medium",
+            monsterStats: { STR: 5, INT: 5, AGI: 5, CON: 5, CHA: 5 },
             imageUrl: null
         };
     }
