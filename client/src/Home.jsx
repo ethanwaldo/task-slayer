@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { monsterName, randomMonsterKind } from "./types";
 import logo from "./assets/logo.png";
 import MiniNav from "./MiniNav";
@@ -9,6 +9,44 @@ function Home() {
   const [task, setTask] = useState("");
   const [monsters, setMonsters] = useState(/** @type {Monster[]} */ ([]));
   const [loading, setLoading] = useState(false);
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    fetchProfile();
+    fetchQuests();
+  }, []);
+
+  async function fetchProfile() {
+    try {
+      const res = await fetch("/api/profile");
+      const data = await res.json();
+      if (data.profile) {
+        setProfile(data.profile);
+      }
+    } catch (e) {
+      console.error("Failed to fetch profile", e);
+    }
+  }
+
+  async function fetchQuests() {
+    try {
+      const res = await fetch("/api/quests");
+      const data = await res.json();
+      if (data.quests) {
+        setMonsters(data.quests.map(q => ({
+          id: q._id,
+          taskName: q.monsterName,
+          flavorText: q.flavorText,
+          imageUrl: q.imageUrl,
+          kind: q.type,
+          primaryStat: q.primaryStat,
+          task: q.description,
+        })));
+      }
+    } catch (e) {
+      console.error("Failed to fetch quests", e);
+    }
+  }
 
   /** @type {React.SubmitEventHandler<HTMLFormElement>} */
   async function onSubmitTask(e) {
@@ -22,30 +60,48 @@ function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ description: task })
       });
+
       const data = await res.json();
-      
-      let id = monsters.length > 0 ? Math.max(...monsters.map(m => m.id)) + 1 : 0;
-      
+      if (!data.quest) {
+        console.error("Summon failed:", data.error);
+        return;
+      }
+      const q = data.quest;
+
       setMonsters([
         ...monsters,
         {
-          id,
-          taskName: data.name,
-          flavorText: data.flavorText,
-          imageUrl: data.imageUrl,
-          primaryStat: data.primaryStat || "INT",
-          kind: data.type || "Anomaly",
-          task: task,
-          level: 1,
-          currentHp: 10,
-          maxHp: 10
+          id: q._id,
+          taskName: q.monsterName,
+          flavorText: q.flavorText,
+          imageUrl: q.imageUrl,
+          kind: q.type,
+          primaryStat: q.primaryStat || "INT",
+          task: q.description,
         }
       ]);
       setTask("");
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error("Failed to summon monster:", error);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function onSlay(monster) {
+    try {
+      const res = await fetch("/api/quest/complete", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ questId: monster.id })
+      });
+      const data = await res.json();
+      if (data.profile) {
+        setProfile(data.profile);
+      }
+      setMonsters(monsters.filter(m => m.id !== monster.id));
+    } catch (error) {
+      console.error("Failed to slay monster:", error);
     }
   }
   /** @type {React.ChangeEventHandler<HTMLInputElement, HTMLInputElement>} */
@@ -91,20 +147,7 @@ function Home() {
                     </div>
                   </div>
                   <button 
-                    onClick={() => {
-                      setMonsters(monsters.filter(monster => monster.id !== m.id));
-                      fetch("/api/quest/complete", { 
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ stat: m.primaryStat })
-                      })
-                        .then(res => res.json())
-                        .then(data => {
-                          if (data.result === "success") {
-                            console.log(`Slayed! Earned 150 EXP and +${data.amount} ${data.statGained}`);
-                          }
-                        });
-                    }}
+                    onClick={() => onSlay(m)}
                     className="home-slay-button"
                   >
                     Slay

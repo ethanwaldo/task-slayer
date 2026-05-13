@@ -3,6 +3,7 @@ import { useState } from "react";
 function Login({ onLogin }) {
   const [isRegistering, setIsRegistering] = useState(false);
   const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [selectedClass, setSelectedClass] = useState("Scholar");
   const [error, setError] = useState("");
 
@@ -13,7 +14,9 @@ function Login({ onLogin }) {
     setError("");
 
     const endpoint = isRegistering ? "/api/auth/register" : "/api/auth/login";
-    const body = isRegistering ? { username, class_: selectedClass } : { username };
+    const body = isRegistering
+      ? { username, password, class_: selectedClass }
+      : { username, password };
 
     try {
       const res = await fetch(endpoint, {
@@ -51,6 +54,16 @@ function Login({ onLogin }) {
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            className="login-input"
+            required
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            minLength={6}
             className="login-input"
             required
           />
