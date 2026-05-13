@@ -14,6 +14,8 @@ export async function generateGuest() {
   return {
     session: await createSession(),
     class_: "Scholar",
+    exp: 0,
+    stats: { STR: 10, INT: 10, AGI: 10, CON: 10, CHA: 10 },
     monsters: [
       {
         name: "Dust Golem",
