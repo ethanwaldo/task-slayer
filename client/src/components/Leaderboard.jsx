@@ -5,17 +5,26 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
     const [players, setPlayers] = useState([]); // Checks if leaderboard data returned from backend
     const [loading, setLoading] = useState(true); // Tracks if leaderboard request is loading
 
-    useEffect(() => { // Get leaderboard data
-        fetch("http://localhost:5000/api/leaderboard")
-        .then((res) => res.json())
-        .then((data) => {
-            setPlayers(data.leaderboard || []); // store from api response else output empty array if no data returned
-            setLoading(false);
-        })
-        .catch((error) => {
-            console.error("Failed to fetch leaderboard:", error); // debugging errors
-            setLoading(false);
-        });
+    useEffect(() => {
+        const getLeaderboard = async() => {
+            try{
+                const res = await fetch("http://localhost:5000/api/leaderboard");
+
+                if (!res.ok){
+                    throw new Error("Failed to fetch leaderboard!");
+                }
+
+                const data = await res.json();
+                setPlayers(data.leaderboard || []);
+            }
+            catch (error){
+                console.error("Failed to fetch leaderboard:", error);
+            }
+            finally {
+                setLoading(false);
+            }
+        };
+        getLeaderboard();
     }, []);
 
     return (
