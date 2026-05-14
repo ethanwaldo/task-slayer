@@ -85,7 +85,7 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
                         <span className="leaderboard-rank">#{index+1}</span>
                         <span className="leaderboard-name">{player.name}</span>
                         <span className="leaderboard-class">{player.classType}</span>
-                        <span className="leaderboard-exp">{player.exp}</span>
+                        <span className="leaderboard-exp">{Number(player.exp).toLocaleString()}</span>
                     </div>
                 ))}
             </section>
