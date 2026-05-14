@@ -663,15 +663,15 @@ body {
   min-height: 100vh;
   background: var(--color-slate-950);
   color: var(--color-white);
-  padding: 96px 16px 48px;
+  padding: 72px 16px 48px;
 }
 
 .leaderboard-hero {
   display: flex;
   flex-direction: column;
   align-items: center;
-  row-gap: 12px;
-  margin-bottom: 48px;
+  row-gap: 10px;
+  margin-bottom: 36px;
 }
 
 .leaderboard-heading {
@@ -719,15 +719,15 @@ body {
   font-weight: bold;
 }
 
-.leaderboard-row{
+.leaderboard-row {
   color: var(--color-slate-100);
   border-top: 2px solid var(--color-slate-800);
+  transition: background-color 0.2s ease;
 }
 
-.leaderboard-row:hover{
-  background: var(--color-slate-800);
+.leaderboard-row:hover {
+  background-color: var(--color-slate-800);
 }
-
 .leaderboard-rank {
   font-weight: bold;
   color: var(--color-primary-light);
