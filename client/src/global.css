@@ -762,3 +762,7 @@ body {
   }
 }
 
+.leaderboard-error{
+  color: #ff6b6b;
+  font-weight: 600;
+}
