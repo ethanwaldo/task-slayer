@@ -8,7 +8,7 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
     useEffect(() => {
         const getLeaderboard = async() => {
             try{
-                const res = await fetch("http://localhost:5000/api/leaderboard");
+                const res = await fetch("http://localhost:5000/api/leaderboard"); // TODO: FOR DEPLOYMENT, MUST BE FIXED WITH VITE_API 
 
                 if (!res.ok){
                     throw new Error("Failed to fetch leaderboard!");
