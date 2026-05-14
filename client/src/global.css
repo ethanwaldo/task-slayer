@@ -766,3 +766,9 @@ body {
   color: #ff6b6b;
   font-weight: 600;
 }
+
+.leaderboard-message-row{
+  grid-template-columns: 1fr;
+  text-align: center;
+  justify-items: center;
+}

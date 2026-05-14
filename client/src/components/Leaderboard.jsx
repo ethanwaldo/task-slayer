@@ -57,15 +57,13 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
 
                 {/* Show loading while waiting for backend response */}
                 {loading && (
-                    <div className="leaderboard-row">
-                        <span></span>
+                    <div className="leaderboard-row leaderboard-message-row">
                         <span>Loading leaderboard...</span>
                     </div>
                 )}
 
                 {!loading && error && (
-                    <div className="leaderboard-row leaderboard-error">
-                        <span></span>
+                    <div className="leaderboard-row leaderboard-message-row leaderboard-error">
                         <span>{error}</span>
                     </div>
                 )}
@@ -73,8 +71,7 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
 
                 {/* Empty state output if request is successful but no users on leaderboard yet */}
                 {!loading && !error && players.length === 0 && (
-                    <div className="leaderboard-row">
-                        <span></span>
+                    <div className="leaderboard-row leaderboard-message-row">
                         <span>No slayers ranked yet.</span>
                     </div>
                 )}
