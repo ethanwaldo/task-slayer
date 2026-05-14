@@ -72,7 +72,7 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
 
 
                 {/* Empty state output if request is successful but no users on leaderboard yet */}
-                {!loading && players.length === 0 && (
+                {!loading && !error && players.length === 0 && (
                     <div className="leaderboard-row">
                         <span></span>
                         <span>No slayers ranked yet.</span>
