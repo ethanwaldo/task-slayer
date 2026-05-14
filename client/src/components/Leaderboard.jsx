@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
     const [players, setPlayers] = useState([]); // Checks if leaderboard data returned from backend
     const [loading, setLoading] = useState(true); // Tracks if leaderboard request is loading
+    const [error, setError] = useState("");
 
     useEffect(() => {
         const getLeaderboard = async() => {
@@ -16,9 +17,11 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
 
                 const data = await res.json();
                 setPlayers(data.leaderboard || []);
+                setError("");
             }
             catch (error){
                 console.error("Failed to fetch leaderboard:", error);
+                setError("Could not load leaderboard. Please try again later.");
             }
             finally {
                 setLoading(false);
@@ -59,6 +62,14 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
                         <span>Loading leaderboard...</span>
                     </div>
                 )}
+
+                {!loading && error && (
+                    <div className="leaderboard-row leaderboard-error">
+                        <span></span>
+                        <span>{error}</span>
+                    </div>
+                )}
+
 
                 {/* Empty state output if request is successful but no users on leaderboard yet */}
                 {!loading && players.length === 0 && (
