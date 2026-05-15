@@ -658,6 +658,7 @@ body {
   --color-white: #fff;
 }
 
+
 /* // LEADERBORD CSS (4/26/26) BY ANT */
 .leaderboard-page {
   min-height: 100vh;
@@ -776,4 +777,17 @@ body {
   grid-template-columns: 1fr;
   text-align: center;
   justify-items: center;
+}
+
+
+.leaderboard-row:nth-of-type(2) .leaderboard-rank {
+  color: var(--color-yellow-400);
+}
+
+.leaderboard-row:nth-of-type(3) .leaderboard-rank {
+  color: var(--color-slate-300);
+}
+
+.leaderboard-row:nth-of-type(4) .leaderboard-rank {
+  color: var(--color-orange-400);
 }
