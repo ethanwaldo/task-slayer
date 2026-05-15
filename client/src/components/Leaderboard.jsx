@@ -42,7 +42,7 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
             <section className="leaderboard-hero">
                 <h1 className="leaderboard-heading">Leaderboard</h1>
                 <p className="leaderboard-subheading">
-                    Top slayers ranked by experience earned.
+                    Top slayers ranked by experience.
                 </p>
             </section>
 
