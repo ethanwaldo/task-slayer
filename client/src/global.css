@@ -661,8 +661,7 @@ body {
 
 /* // LEADERBORD CSS (4/26/26) BY ANT */
 .leaderboard-page {
-  min-height: 100vh;
-  background: var(--color-slate-950);
+  min-height: calc(100vh - 56px);
   color: var(--color-white);
   padding: 72px 16px 48px;
 }
@@ -677,18 +676,17 @@ body {
 
 .leaderboard-heading {
   text-align: center;
-  font-family: sans-serif;
-  font-size: 3.6rem;
-  font-weight: bold;
+  font-size: 3.8rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
   color: var(--color-white);
+  text-shadow: 0 0 36px rgba(59, 130, 246, 0.25);
 }
-
 .leaderboard-subheading {
   text-align: center;
-  font-family: sans-serif;
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: var(--color-gray-400);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-slate-400);
 }
 
 .leaderboard-panel {
@@ -790,4 +788,13 @@ body {
 
 .leaderboard-row:nth-of-type(4) .leaderboard-rank {
   color: var(--color-orange-400);
+}
+
+.leaderboard-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(37, 99, 235, 0.18), transparent 30%),
+    var(--color-slate-950);
+  color: var(--color-white);
+  padding: 72px 16px 48px;
 }
