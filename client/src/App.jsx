@@ -5,6 +5,7 @@ import Home from "./Home";
 import Leaderboard from "./components/Leaderboard";
 import Login from "./Login";
 import "./global.css";
+import Shop from "./Shop";
 
 function InsideRouter() {
   const [profile, setProfile] = useState(null);
@@ -36,6 +37,7 @@ function InsideRouter() {
       <Route path="/login" element={<Login onLogin={onLogin} isRegistering={false} />} /> 
       <Route path="/register" element={<Login onLogin={onLogin} isRegistering={true} />} /> 
       <Route path="/class" element={<ClassPage />} />
+      <Route path="/shop" element={<Shop />} />
       <Route path="/leaderboard" element={<Leaderboard />} />
     </Routes>
   );

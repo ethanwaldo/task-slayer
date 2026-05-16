@@ -5,6 +5,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
+import dayjs from 'dayjs';
 import { isClass } from './types';
 import { getProfile } from './profile';
 /** @import { Class, Guest, Session, User } from "./types" */
@@ -201,11 +202,17 @@ app.post('/api/quest/complete', authMiddleware, async (req, res) => {
     multiplier = 1;
   }
 
+  if (user.items.critBoost && dayjs().isBefore(user.items.critBoost)) {
+    multiplier *= 1.2;
+  }
+  const xpMultiplier = (user.items.xpBoost && dayjs().isBefore(dayjs(user.items.xpBoost))) ? 1.2 : 1;
+  const coinMultiplier = (user.items.coinRush && dayjs().isBefore(dayjs(user.items.coinRush)) ? 1.5 : 1);
+
   // rewards scale with difficulty
   const rewards = { easy: [100, 10], medium: [200, 25], hard: [400, 50], boss: [1000, 150] };
   const [baseXp, baseCoins] = rewards[quest.difficulty] || rewards.medium;
-  const xpEarned = Math.round(baseXp * multiplier);
-  const coinsEarned = Math.round(baseCoins * multiplier);
+  const xpEarned = Math.round(baseXp * multiplier * xpMultiplier);
+  const coinsEarned = Math.round(baseCoins * multiplier * coinMultiplier);
 
   user.exp = (user.exp || 0) + xpEarned;
   user.coins = (user.coins || 0) + coinsEarned;
@@ -245,7 +252,7 @@ app.post('/api/quest/complete', authMiddleware, async (req, res) => {
     coinsEarned,
     statGained: statKey,
     statAmount: statGain,
-    profile: { displayName: user.username, class_: user.class_, exp: user.exp, stats: user.stats, coins: user.coins, title: user.title, level }
+    profile: { displayName: user.username, class_: user.class_, hp: user.hp, exp: user.exp, stats: user.stats, coins: user.coins, title: user.title, level }
   });
 });
 
@@ -253,12 +260,95 @@ app.delete('/api/quest/:id', authMiddleware, async (req, res) => {
   const user = await User.findOne({ username: req.user.username });
   if (!user) return res.status(401).json({ result: "unauthorized" });
 
-  const quest = user.quests.id(req.params.id);
-  if (!quest) return res.status(404).json({ error: "Quest not found" });
+  // const quest = user.quests.id(req.params.id);
+  // if (!quest) return res.status(404).json({ error: "Quest not found" });
 
-  quest.deleteOne();
+  const index = user.quests.findIndex(q => q.id === req.params.id);
+  if (index === -1) return res.status(404).json({ error: "Quest not found" });
+
+  user.quests.splice(index, 1);
   await user.save();
   res.json({ result: "success" });
+});
+
+app.patch('/api/quest', authMiddleware, async (req, res) => {
+  const user = await User.findOne({ username: req.user.username });
+  if (!user) return res.status(401).json({ result: "unauthorized" });
+
+  const updates = req.body;
+  if (!updates?.id) return res.status(400).json({ error: "quest required" });
+
+  const quest = user.quests.id(updates.id);
+  if (!quest) return res.status(404).json({ error: "Quest not found" });
+
+  quest.deadline = updates.deadline;
+  quest.missedDeadline = false;
+  await user.save();
+  res.json({ result: "success" });
+});
+
+app.post('/api/tick', authMiddleware, async (req, res) => {
+  const user = await User.findOne({ username: req.user.username });
+  if (!user) return res.status(401).json({ result: "unauthorized" });
+
+  const newHp = req.body.hp;
+  const missedDeadlines = req.body.missedDeadlines;
+  if (typeof newHp !== "number" || !missedDeadlines) {
+    return res.status(400).json({ error: "hp and missed deadlines required" });
+  }
+  
+  for (const quest of user.quests) {
+    if (missedDeadlines.includes(quest.id)) {
+      quest.missedDeadline = true;
+    }
+  }
+
+  user.hp = newHp;
+
+  await user.save();
+  res.json({ result: "success" });
+});
+
+app.post('/api/buy', authMiddleware, async (req, res) => {
+  const user = await User.findOne({ username: req.user.username });
+  if (!user) return res.status(401).json({ result: "unauthorized" });
+
+  const { name, price } = req.body;
+  if (typeof name !== "string" || typeof price !== "number") {
+    return res.status(400).json({ error: "name and price required" });
+  }
+
+  let hp = user.hp;
+  const coins = Math.max(user.coins - price, 0);
+  
+  switch (name) {
+    case "Health Potion": {
+      hp = getPlayerMaxHp(user.exp);
+      break;
+    }
+    case "XP Boost": {
+      user.items.xpBoost = dayjs().add(1, "day").toDate();
+      break;
+    }
+    case "Critical Hit Boost": {
+      user.items.critBoost = dayjs().add(1, "day").toDate();
+      break;
+    }
+    case "Coin Rush": {
+      user.items.coinRush = dayjs().add(1, "day").toDate();
+      break;
+    }
+    case "Name Color": {
+      user.items.nameColor = true;
+      break;
+    }
+  }
+
+  user.hp = hp;
+  user.coins = coins;
+
+  await user.save();
+  res.json({ result: "success", profile: getProfile(user) });
 });
 
 // Getting saved users from data file (Anthony's leaderboard)
@@ -272,6 +362,7 @@ app.get("/api/leaderboard", async (req, res) => {
       exp: user.exp || 0,
       title: user.title || "Apprentice Slayer",
       level: Math.floor((user.exp || 0) / 1000) + 1,
+      nameColor: user.items.nameColor
     }));
     res.json({ result: "success", leaderboard });
   } catch (error){
@@ -282,6 +373,14 @@ app.get("/api/leaderboard", async (req, res) => {
     });
   }
 });
+
+function getPlayerMaxHp(xp) {
+  return 10 + levelFromXp(xp) - 1;
+}
+
+function levelFromXp(xp) {
+  return Math.floor((xp || 0) / 1000) + 1;
+}
 
 // Start Server
 mongoose.connect(process.env.MONGODB_URI).then(() => {

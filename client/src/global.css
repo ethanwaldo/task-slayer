@@ -376,6 +376,16 @@ body {
   color: var(--color-slate-400);
 }
 
+.item-grid-cols {
+  grid-template-columns: 1fr 1fr;
+}
+
+@media screen and (max-width: 768px) {
+  .item-grid-cols {
+    grid-template-columns: 1fr;
+  }
+}
+
 :root {
   --color-primary-lightest: var(--color-blue-50);
   --color-primary-light: var(--color-blue-500);

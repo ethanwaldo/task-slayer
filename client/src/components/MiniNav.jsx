@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import closeIcon from "./assets/close.svg";
-import menuIcon from "./assets/menu.svg";
+import closeIcon from "../assets/close.svg";
+import menuIcon from "../assets/menu.svg";
 import { Link } from "react-router-dom";
 
 function MiniNav() {
@@ -52,6 +52,8 @@ function MiniNav() {
             <nav className="mini-nav-links" onMouseDown={onMiniNavMouseDown}>
               <Link className="mini-nav-link" to="/" onClick={onMiniNavLinkClick}>Home</Link>
               <Link className="mini-nav-link" to="/class" onClick={onMiniNavLinkClick}>Class</Link>
+              <Link className="mini-nav-link" to="/shop" onClick={onMiniNavLinkClick}>Shop</Link>
+              <Link className="mini-nav-link" to="/leaderboard" onClick={onMiniNavLinkClick}>Leaderboard</Link>
             </nav> :
             <></>
         }

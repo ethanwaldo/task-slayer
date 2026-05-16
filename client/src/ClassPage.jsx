@@ -8,8 +8,8 @@ import chevronLeft from "./assets/chevron-left.svg";
 import { defaultClass, isClass, nextClass, prevClass } from "./types";
 import logo from "./assets/logo.png";
 import { Link } from "react-router-dom";
-import MiniNav from "./MiniNav";
-import Nav from "./Nav";
+import MiniNav from "./components/MiniNav";
+import Nav from "./components/Nav";
 /** @import { Class } from "./types" */
 
 function ClassPage() {

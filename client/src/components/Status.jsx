@@ -1,10 +1,8 @@
 import { FaHeart } from "react-icons/fa";
-import { GiAbstract039, GiAbstract069, GiAbstract091, GiTwoCoins } from "react-icons/gi";
+import { GiAbstract069 } from "react-icons/gi";
 import { TbCoin, TbCoinFilled } from "react-icons/tb";
 
-const reviveCost = 1;
-
-export default function Status({ profile, revive }) {
+export default function Status({ profile }) {
   const maxHp = getPlayerMaxHp(profile.exp);
 
   // TODO: remove when we add an `hp` field to User
@@ -18,6 +16,11 @@ export default function Status({ profile, revive }) {
   return (
     <div className="flex justify-center">
       <div className="w-full flex flex-col items-center mx-6 max-w-90">
+        {profile.hp === 0 && (
+          <div className="justify-self-end">
+            <div className="text-red-400 rounded font-bold pb-4">You are dead!</div>
+          </div>
+        )}
         <div className="w-full grid gap-x-2 items-center" style={{ gridTemplateColumns: "max-content auto", gridTemplateRows: "auto min-content" }}>
           <FaHeart className="text-red-500 col-1 row-1 w-8 h-8" />
           <div className="grow h-2 bg-gray-500 rounded-full">
@@ -41,11 +44,6 @@ export default function Status({ profile, revive }) {
         <div className="w-full grid gap-x-2 items-center mt-2" style={{ gridTemplateColumns: "min-content min-content auto" }}>
           <GiAbstract069 className="text-amber-300 w-8 h-8" />
           <div className="text-amber-300">{profile.coins}</div>
-          {profile.hp < 0 && (
-            <div className="justify-self-end">
-              <button onClick={revive} className="cursor-pointer bg-red-500 rounded text-gray-300 font-bold p-1.5">Revive? ({reviveCost})</button>
-            </div>
-          )}
         </div>
       </div>
     </div>

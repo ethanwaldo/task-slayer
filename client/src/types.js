@@ -10,17 +10,6 @@
  */
 
 /**
- * @typedef {object} Monster
- * @property {number} id
- * @property {string} taskName
- * @property {MonsterKind} kind
- * @property {string} task
- * @property {Level} level
- * @property {number} currentHp
- * @property {number} maxHp
- */
-
-/**
  * 
  * @typedef {monsterKinds[number]} MonsterKind 
  */

@@ -17,13 +17,16 @@ const questSchema = new mongoose.Schema({
   },
   hp: { type: Number, default: 100 },
   status: { type: String, enum: ["active", "completed"], default: "active" },
-  completedAt: { type: Date, default: null }
+  completedAt: { type: Date, default: null },
+  deadline: { type: Date, default: null },
+  missedDeadline: { type: Boolean, default: false }
 }, { timestamps: true });
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   passwordHash: { type: String, required: true },
   class_: { type: String, enum: ["Warrior", "Scholar", "Bard", "Monk", "Rogue"], required: true },
+  hp: { type: Number, default: 10 },
   exp: { type: Number, default: 0 },
   stats: {
     STR: { type: Number, default: 10 },
@@ -36,7 +39,13 @@ const userSchema = new mongoose.Schema({
   quests: { type: [questSchema], default: [] },
   coins: { type: Number, default: 0 },
   title: { type: String, default: "Apprentice Slayer" },
-  inventory: { type: Array, default: [] }
+  inventory: { type: Array, default: [] },
+  items: {
+    xpBoost: { type: Date, default: null },
+    critBoost: { type: Date, default: null },
+    coinRush: { type: Date, default: null },
+    nameColor: { type: Boolean, default: false }
+  }
 }, { timestamps: true });
 
 export const User = mongoose.model('User', userSchema);

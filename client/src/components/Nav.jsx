@@ -6,7 +6,8 @@ function Nav() {
       <nav className="nav">
         <Link className="nav-link" to="/">Home</Link>
         <Link className="nav-link" to="/class">Class</Link>
-        <Link className="nav-link" to="/Leaderboard">Leaderboard</Link>
+        <Link className="nav-link" to="/shop">Shop</Link>
+        <Link className="nav-link" to="/leaderboard">Leaderboard</Link>
       </nav>
     </>
   );
