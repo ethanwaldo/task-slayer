@@ -4,18 +4,31 @@ import { useEffect, useState } from "react";
 function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
     const [players, setPlayers] = useState([]); // Checks if leaderboard data returned from backend
     const [loading, setLoading] = useState(true); // Tracks if leaderboard request is loading
+    const [error, setError] = useState("");
 
-    useEffect(() => { // Get leaderboard data
-        fetch("/api/leaderboard")
-        .then((res) => res.json())
-        .then((data) => {
-            setPlayers(data.leaderboard || []); // store from api response else output empty array if no data returned
-            setLoading(false);
-        })
-        .catch((error) => {
-            console.error("Failed to fetch leaderboard:", error); // debugging errors
-            setLoading(false);
-        });
+    // Anthony's async/await fetch with error handling, using relative URL for proxy
+    useEffect(() => {
+        const getLeaderboard = async() => {
+            try{
+                const res = await fetch("/api/leaderboard");
+
+                if (!res.ok){
+                    throw new Error("Failed to fetch leaderboard!");
+                }
+
+                const data = await res.json();
+                setPlayers(data.leaderboard || []);
+                setError("");
+            }
+            catch (error){
+                console.error("Failed to fetch leaderboard:", error);
+                setError("Could not load leaderboard. Please try again later.");
+            }
+            finally {
+                setLoading(false);
+            }
+        };
+        getLeaderboard();
     }, []);
 
     return (
@@ -30,7 +43,7 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
             <section className="leaderboard-hero">
                 <h1 className="leaderboard-heading">Leaderboard</h1>
                 <p className="leaderboard-subheading">
-                    Top slayers ranked by experience earned.
+                    Top slayers ranked by experience.
                 </p>
             </section>
 
@@ -45,16 +58,21 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
 
                 {/* Show loading while waiting for backend response */}
                 {loading && (
-                    <div className="leaderboard-row">
-                        <span></span>
+                    <div className="leaderboard-row leaderboard-message-row">
                         <span>Loading leaderboard...</span>
                     </div>
                 )}
 
+                {!loading && error && (
+                    <div className="leaderboard-row leaderboard-message-row leaderboard-error">
+                        <span>{error}</span>
+                    </div>
+                )}
+
+
                 {/* Empty state output if request is successful but no users on leaderboard yet */}
-                {!loading && players.length === 0 && (
-                    <div className="leaderboard-row">
-                        <span></span>
+                {!loading && !error && players.length === 0 && (
+                    <div className="leaderboard-row leaderboard-message-row">
                         <span>No slayers ranked yet.</span>
                     </div>
                 )}
@@ -70,7 +88,7 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
                             </div>
                         </div>
                         <span className="leaderboard-class">{player.classType} (Lvl {player.level})</span>
-                        <span className="leaderboard-exp">{player.exp}</span>
+                        <span className="leaderboard-exp">{Number(player.exp).toLocaleString()} XP</span>
                     </div>
                 ))}
             </section>
