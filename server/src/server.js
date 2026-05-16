@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import { isClass } from './types';
+import { getProfile } from './profile';
 /** @import { Class, Guest, Session, User } from "./types" */
 
 import path from 'path';
@@ -68,7 +69,10 @@ app.post('/api/auth/register', async (req, res) => {
     await user.save();
 
     const token = signToken({ username: user.username, userId: user._id.toString() });
-    res.cookie(sessionCookieName, token, sessionCookieOptions).json({ result: "success" });
+    res.cookie(sessionCookieName, token, sessionCookieOptions).json({
+      result: "success",
+      profile: getProfile(user)
+    });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -86,7 +90,10 @@ app.post('/api/auth/login', async (req, res) => {
     if (!ok) return res.status(401).json({ error: "Invalid username or password" });
 
     const token = signToken({ username: user.username, userId: user._id.toString() });
-    res.cookie(sessionCookieName, token, sessionCookieOptions).json({ result: "success" });
+    res.cookie(sessionCookieName, token, sessionCookieOptions).json({
+      result: "success",
+      profile: getProfile(user)
+    });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -103,13 +110,7 @@ app.get('/api/profile', authMiddleware, async (req, res) => {
 
   res.json({
     result: "success",
-    profile: {
-      displayName: user.username,
-      class_: user.class_,
-      monsters: user.monsters || [],
-      exp: user.exp,
-      stats: user.stats
-    }
+    profile: getProfile(user)
   });
 });
 

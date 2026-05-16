@@ -1,7 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-function Login({ onLogin }) {
-  const [isRegistering, setIsRegistering] = useState(false);
+function Login({ onLogin, isRegistering = false }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [selectedClass, setSelectedClass] = useState("Scholar");
@@ -31,7 +31,7 @@ function Login({ onLogin }) {
         return;
       }
 
-      onLogin(); // Tell App.jsx we're logged in
+      onLogin(data.profile); // Tell App.jsx we're logged in
     } catch (err) {
       setError("Network error");
     }
@@ -91,12 +91,10 @@ function Login({ onLogin }) {
           </button>
         </form>
 
-        <p 
-          onClick={() => setIsRegistering(!isRegistering)}
-          className="login-toggle-text"
-        >
-          {isRegistering ? "Already have an account? Login here." : "New slayer? Register here."}
-        </p>
+        {isRegistering ?
+          <Link className="login-toggle-text" to="/login">Already have an account? Login here.</Link> :
+          <Link className="login-toggle-text" to="/register">New slayer? Register here.</Link>
+        }
       </div>
     </div>
   );

@@ -1,15 +1,53 @@
 import { useState, useEffect } from "react";
+import { Link, Navigate } from "react-router-dom";
 import { monsterName, randomMonsterKind } from "./types";
 import logo from "./assets/logo.png";
 import MiniNav from "./MiniNav";
 import Nav from "./Nav";
+import Status from "./components/Status";
 /** @import { Monster } from "./types" */
 
-function Home() {
+function Home({ loading, initialProfile }) {
+  return (
+    <>
+      {initialProfile === null ?
+        <HeroHome loading={loading} /> :
+        <BattleHome initialProfile={initialProfile} />
+      }
+    </>
+  );
+}
+
+function HeroHome({ loading }) {
+  return (
+    <>
+      <title>Task Slayer</title>
+      <Header />
+      <Hero />
+      <div className="flex flex-col items-center mt-15 w-full">
+        <div className="home-monsters-container items-center">
+          <h2 className="home-monsters-heading">What monsters will we slay today?</h2>
+          {!loading && <LoginButtons />}
+        </div>
+      </div>
+    </>
+  );
+}
+
+function LoginButtons() {
+  return (
+    <div className="flex justify-center gap-x-2">
+      <Link className="px-4 py-2 rounded text-white bg-blue-600" to="/login">Log in</Link>
+      <Link className="px-4 py-2 rounded text-blue-500 border border-blue-500" to="/register">Sign up</Link>
+    </div>
+  );
+}
+
+function BattleHome({ initialProfile }) {
   const [task, setTask] = useState("");
   const [monsters, setMonsters] = useState(/** @type {Monster[]} */ ([]));
   const [loading, setLoading] = useState(false);
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(initialProfile);
   const [slayAlert, setSlayAlert] = useState(null);
 
   useEffect(() => {
@@ -113,6 +151,11 @@ function Home() {
       console.error("Failed to slay monster:", error);
     }
   }
+
+  function revivePlayer() {
+    // TODO
+  }
+
   /** @type {React.ChangeEventHandler<HTMLInputElement, HTMLInputElement>} */
   function onChangeTask(e) {
     setTask(e.target.value);
@@ -134,14 +177,11 @@ function Home() {
         </div>
       )}
 
-      <div className="hero">
-        <img className="hero-logo" alt="logo" src={logo} />
-        <div className="hero-heading">Task Slayer</div>
-        <div className="hero-subheading">Finish tasks. Slay monsters. Level up.</div>
-      </div>
-      <div className="home-monsters-section">
-        <div className="home-monsters-container">
-          <h2 className="home-monsters-heading">What monsters will we slay today?</h2>
+      <div className="home-monsters-section mt-18 md:mt-10">
+        <HeroLogo />
+        <div className="home-monsters-container mt-12">
+          <Status profile={profile} revive={revivePlayer} />
+          <h2 className="home-monsters-heading mt-6">What monsters will we slay today?</h2>
           <form onSubmit={onSubmitTask}>
             <input
               className="home-monsters-input"
@@ -194,6 +234,22 @@ function Header() {
         <MiniNav />
       </header>
     </>
+  );
+}
+
+function Hero() {
+  return (
+    <div className="hero">
+      <HeroLogo />
+      <div className="hero-heading">Task Slayer</div>
+      <div className="hero-subheading">Finish tasks. Slay monsters. Level up.</div>
+    </div>
+  );
+}
+
+function HeroLogo() {
+  return (
+    <img className="hero-logo" alt="logo" src={logo} />
   );
 }
 
