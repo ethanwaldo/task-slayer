@@ -33,7 +33,7 @@
  * @exports {User}
  */
 
-const classes = /** @type {const} */ (["Warrior", "Scholar", "Bard", "Monk"]);
+const classes = /** @type {const} */ (["Warrior", "Scholar", "Bard", "Monk", "Rogue"]);
 
 const monsterKinds = /** @type {const} */ ([
   "Demon",
@@ -72,7 +72,7 @@ export function isClass(class_) {
  * @returns {Class}
  */
 export function prevClass(class_) {
-  const i = (classes.indexOf(class_) - 1 + 4) % classes.length;
+  const i = (classes.indexOf(class_) - 1 + classes.length) % classes.length;
   return classes[i];
 }
 

@@ -43,7 +43,7 @@
  * @exports {User}
  */
 
-const classes = /** @type {const} */ (["Warrior", "Scholar", "Bard", "Monk"]);
+const classes = /** @type {const} */ (["Warrior", "Scholar", "Bard", "Monk", "Rogue"]);
 
 /**
  * 
