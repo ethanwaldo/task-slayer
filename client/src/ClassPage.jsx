@@ -3,12 +3,13 @@ import warriorImage from "./assets/warrior.webp";
 import scholarImage from "./assets/scholar.png";
 import bardImage from "./assets/bard.webp";
 import monkImage from "./assets/monk.jpg";
+import rogueImage from "./assets/rogue.png";
 import chevronLeft from "./assets/chevron-left.svg";
 import { defaultClass, isClass, nextClass, prevClass } from "./types";
 import logo from "./assets/logo.png";
 import { Link } from "react-router-dom";
-import MiniNav from "./MiniNav";
-import Nav from "./Nav";
+import MiniNav from "./components/MiniNav";
+import Nav from "./components/Nav";
 /** @import { Class } from "./types" */
 
 function ClassPage() {
@@ -118,6 +119,7 @@ function imageSrcFromClass(class_) {
     case "Scholar": return scholarImage;
     case "Bard": return bardImage;
     case "Monk": return monkImage;
+    case "Rogue": return rogueImage;
   }
 }
 

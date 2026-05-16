@@ -1,58 +1,44 @@
-import fs from "fs/promises";
-import path from 'path';
-import { fileURLToPath } from 'url';
-/** @import { User } from "../types" */
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const dataFilePath = path.join(__dirname, "data.json");
+import { User } from '../models/User.js';
+/** @import { User as UserType } from "../types" */
 
 /**
- * @returns {Promise<User[]>}
+ * @returns {Promise<UserType[]>}
  */
 async function getUsers() {
-  return readData();
-}
-
-/**
- * @param {User} user
- */
-async function addUser(user) {
-  const data = await getUsers();
-  data.push(user);
-  writeData(data);
-}
-
-/**
- * @param {User} user
- */
-async function updateUser(user) {
-  const data = await getUsers();
-  const i = data.findIndex(x => x.session.id === user.session.id);
-  if (i !== -1) {
-    data[i] = user;
-    writeData(data);
-  }
-}
-
-/**
- * @returns {Promise<User[]>}
- */
-async function readData() {
   try {
-    const result = await fs.readFile(dataFilePath);
-    return JSON.parse(result.toString());
+    const users = await User.find().lean();
+    // Filter out old legacy accounts from the previous AI schema that lack a session
+    return users.filter(u => u.session && u.session.id);
   } catch (e) {
     return [];
   }
 }
 
 /**
- * @param {User[]} data
+ * @param {UserType} user
  */
-async function writeData(data) {
-  fs.writeFile(dataFilePath, JSON.stringify(data, null, 2));
+async function addUser(user) {
+  try {
+    const newUser = new User(user);
+    await newUser.save();
+  } catch (e) {
+    console.error("Failed to add user to Mongo:", e);
+  }
+}
+
+/**
+ * @param {UserType} user
+ */
+async function updateUser(user) {
+  try {
+    await User.findOneAndUpdate(
+      { "session.id": user.session.id },
+      user,
+      { upsert: true }
+    );
+  } catch (e) {
+    console.error("Failed to update user in Mongo:", e);
+  }
 }
 
 const dataFile = {

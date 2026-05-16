@@ -1,21 +1,14 @@
-/** @import { Profile, User } from "./types" */
 
-/**
- * @param {User} user
- * @returns {Profile}
- */
 export function getProfile(user) {
   return {
-    displayName: displayName(user),
+    displayName: user.username,
     class_: user.class_,
-    monsters: user.monsters,
+    monsters: user.monsters || [],
+    hp: user.hp,
+    exp: user.exp,
+    stats: user.stats,
+    coins: user.coins,
+    title: user.title,
+    items: user.items
   };
-}
-
-/**
- * @param {User} user
- * @returns {string}
- */
-export function displayName(user) {
-  return "Guest";
 }
