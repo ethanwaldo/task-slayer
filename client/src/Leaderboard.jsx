@@ -26,6 +26,7 @@ function Leaderboard() {
 
     return (
         <>
+        <title>Task Slayer | Leaderboard</title>
         <PageHeader />
         <main id="leaderboard-page">
             <section id="leaderboard-hero">

@@ -35,6 +35,7 @@ export default function Shop() {
 
   return (
     <>
+      <title>Task Slayer | Shop</title>
       <PageHeader />
       <div id="shop-main">
         <div id="shop-content">

@@ -110,7 +110,7 @@ function Home() {
 
   return (
     <>
-      <title>Task Slayer</title>
+      <title>Task Slayer | Home</title>
       <PageHeader />
       <div id="home-main">
         <div

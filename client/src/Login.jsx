@@ -35,6 +35,7 @@ function Login({ onLogin }) {
 
   return (
     <div id="login-main">
+      <title>Task Slayer | Login</title>
       <div id="login-brand-panel" style={{ backgroundImage: `url(${loginBg})` }}>
         <div id="login-brand-overlay" />
         <div id="login-brand-content">
