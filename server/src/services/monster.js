@@ -6,8 +6,6 @@ import { HfInference } from "@huggingface/inference";
  */
 
 export const generateMonsterData = async (taskDescription) => {
-    console.log(`Generating AI data for task: ${taskDescription}`);
-    
     try {
         const apiKey = process.env.HUGGING_FACE;
         if (!apiKey) throw new Error("Missing Hugging Face API key");
@@ -29,7 +27,6 @@ Based on the task "${taskDescription}", create a monster. Categorize the task in
 
         let generatedText = textResponse.choices[0].message.content;
         
-        // Clean up markdown formatting if the model still included it
         generatedText = generatedText.replace(/```json/g, "").replace(/```/g, "").trim();
         
         // Sometimes the model might trail off or include extra text after the JSON
@@ -47,7 +44,6 @@ Based on the task "${taskDescription}", create a monster. Categorize the task in
             throw new Error("Invalid JSON from LLM");
         }
 
-        console.log("Monster text generated:", monsterJSON.name);
 
         // Image Generation
         const imageBlob = await hf.textToImage({
@@ -72,11 +68,9 @@ Based on the task "${taskDescription}", create a monster. Categorize the task in
         };
 
     } catch (e) {
-        console.error("AI Generation Error:", e);
-        // Fallback monster
         return {
-            name: `Error Beast`,
-            flavorText: `Failed due to: ${e.message}`,
+            name: "Unknown Horror",
+            flavorText: "A creature of indeterminate origin, shrouded in mystery.",
             hp: 100,
             type: "Anomaly",
             primaryStat: "INT",

@@ -1,30 +1,23 @@
-import Nav from "../Nav";
+import PageHeader from "./components/PageHeader";
 import { useEffect, useState } from "react";
+import { get } from "./requests";
 
-function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
-    const [players, setPlayers] = useState([]); // Checks if leaderboard data returned from backend
-    const [loading, setLoading] = useState(true); // Tracks if leaderboard request is loading
+function Leaderboard() {
+    const [players, setPlayers] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    // Anthony's async/await fetch with error handling, using relative URL for proxy
     useEffect(() => {
         const getLeaderboard = async() => {
-            try{
-                const res = await fetch("/api/leaderboard");
-
-                if (!res.ok){
-                    throw new Error("Failed to fetch leaderboard!");
-                }
-
-                const data = await res.json();
+            try {
+                const data = await get("/api/leaderboard");
+                if (data.result !== "success") throw new Error("Failed to fetch leaderboard!");
                 setPlayers(data.leaderboard || []);
                 setError("");
-            }
-            catch (error){
+            } catch (error) {
                 console.error("Failed to fetch leaderboard:", error);
                 setError("Could not load leaderboard. Please try again later.");
-            }
-            finally {
+            } finally {
                 setLoading(false);
             }
         };
@@ -32,31 +25,22 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
     }, []);
 
     return (
-        // NAV BAR
         <>
-        <header className="home-header">
-            <Nav />
-            </header>
-
-        {/* LEADERBOARD CONTEXT */}
-        <main className="leaderboard-page">
-            <section className="leaderboard-hero">
-                <h1 className="leaderboard-heading">Leaderboard</h1>
-                <p className="leaderboard-subheading">
-                    Top slayers ranked by experience.
-                </p>
+        <PageHeader />
+        <main id="leaderboard-page">
+            <section id="leaderboard-hero">
+                <h1 id="leaderboard-heading">Leaderboard</h1>
+                <p id="leaderboard-subheading">Top slayers ranked by experience.</p>
             </section>
 
-            <section className="leaderboard-panel">
-                <div className="leaderboard-header-row">
+            <section id="leaderboard-panel">
+                <div id="leaderboard-header-row">
                     <span>Rank</span>
                     <span>Slayer</span>
                     <span>Class</span>
                     <span>Experience</span>
                 </div>
 
-
-                {/* Show loading while waiting for backend response */}
                 {loading && (
                     <div className="leaderboard-row leaderboard-message-row">
                         <span>Loading leaderboard...</span>
@@ -69,20 +53,17 @@ function Leaderboard() { // UPDATED DATA TO CONNECT TO BACKEND
                     </div>
                 )}
 
-
-                {/* Empty state output if request is successful but no users on leaderboard yet */}
                 {!loading && !error && players.length === 0 && (
                     <div className="leaderboard-row leaderboard-message-row">
                         <span>No slayers ranked yet.</span>
                     </div>
                 )}
 
-                {/* Render each player in this format on the leaderboard */}
                 {!loading && players.map((player, index) => (
                     <div className="leaderboard-row" key={player.id}>
-                        <span className="leaderboard-rank">#{index+1}</span>
+                        <span className="leaderboard-rank">#{index + 1}</span>
                         <div className="leaderboard-name-container">
-                            <div className="leaderboard-name">{player.name}</div>
+                            <div className="leaderboard-name" style={player.nameColor ? { color: "var(--color-gold)" } : undefined}>{player.name}</div>
                             <div style={{ fontSize: "0.75rem", color: "var(--color-gray-400)", fontWeight: "normal" }}>
                                 {player.title}
                             </div>

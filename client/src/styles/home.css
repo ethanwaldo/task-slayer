@@ -1,0 +1,115 @@
+#home-main {
+  display: flex;
+  min-height: 100vh;
+  padding-top: 56px;
+}
+
+#home-brand-panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex: 0 0 38%;
+  border-right: 2px solid var(--color-gray-700);
+  background-size: cover;
+  background-position: center top;
+  overflow: hidden;
+}
+
+#home-brand-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+}
+
+#home-brand-footer {
+  position: relative;
+  z-index: 1;
+  background: var(--color-gray-950);
+  border-top: 2px solid var(--color-gray-700);
+  padding: 20px 24px;
+  width: 100%;
+}
+
+#home-brand-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--color-white);
+}
+
+#home-brand-sub {
+  font-size: 14px;
+  color: var(--color-gray-400);
+  margin-top: 4px;
+}
+
+#home-task-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.home-section {
+  padding: 24px 36px;
+  border-bottom: 2px solid var(--color-gray-700);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+#home-section-monsters {
+  flex: 1;
+  border-bottom: none;
+}
+
+@media screen and (max-width: 700px) {
+  #home-main {
+    flex-direction: column;
+    padding-top: 56px;
+  }
+  #home-brand-panel {
+    flex: none;
+    height: 440px;
+    border-right: none;
+    border-bottom: 2px solid var(--color-gray-700);
+  }
+  .home-section {
+    padding: 20px 16px;
+  }
+}
+
+#home-monsters-heading {
+  font-size: 19px;
+  font-weight: normal;
+  color: var(--color-gray-100);
+}
+
+#home-monsters-input {
+  padding: 0 8px;
+  font-size: 16px;
+  background-color: var(--color-gray-800);
+  border: 2px solid var(--color-gray-700);
+  border-radius: 4px;
+  color: var(--color-gray-100);
+  width: 100%;
+  height: 32px;
+}
+
+#home-monsters-input::placeholder {
+  font-weight: bold;
+  color: var(--color-gray-400);
+  opacity: 1;
+}
+
+#home-monsters {
+  display: flex;
+  flex-direction: column;
+  row-gap: 4px;
+}
+
+@media screen and (max-width: 700px) {
+  #home-monsters-heading {
+    font-size: 18px;
+  }
+}

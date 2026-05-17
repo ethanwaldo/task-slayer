@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { post } from "./requests";
+
+const CLASS_OPTIONS = ["Scholar", "Warrior", "Bard", "Monk", "Rogue"];
 
 function Login({ onLogin }) {
   const [isRegistering, setIsRegistering] = useState(false);
@@ -6,8 +9,6 @@ function Login({ onLogin }) {
   const [password, setPassword] = useState("");
   const [selectedClass, setSelectedClass] = useState("Scholar");
   const [error, setError] = useState("");
-
-  const classOptions = ["Scholar", "Warrior", "Bard", "Monk", "Rogue"];
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -19,36 +20,28 @@ function Login({ onLogin }) {
       : { username, password };
 
     try {
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Authentication failed");
+      const data = await post(endpoint, body);
+      if (data.error) {
+        setError(data.error);
         return;
       }
-
-      onLogin(); // Tell App.jsx we're logged in
-    } catch (err) {
+      onLogin();
+    } catch {
       setError("Network error");
     }
   }
 
   return (
-    <div className="login-page">
-      
-      <div className="login-hero">
-        <h1 className="login-heading">Task Slayer</h1>
-        <p className="login-subheading">{isRegistering ? "Forge your destiny." : "Welcome back, slayer."}</p>
+    <div id="login-page">
+      <div id="login-hero">
+        <h1 id="login-heading">Task Slayer</h1>
+        <p id="login-subheading">{isRegistering ? "Forge your destiny." : "Welcome back, slayer."}</p>
       </div>
 
-      <div className="login-panel">
-        {error && <div className="login-error">{error}</div>}
+      <div id="login-panel">
+        {error && <div id="login-error">{error}</div>}
 
-        <form onSubmit={handleSubmit} className="login-form">
+        <form onSubmit={handleSubmit} id="login-form">
           <input
             type="text"
             placeholder="Username"
@@ -69,15 +62,15 @@ function Login({ onLogin }) {
           />
 
           {isRegistering && (
-            <div className="login-archetype-container">
-              <p className="login-archetype-heading">Choose Your Archetype</p>
-              <div className="login-archetype-grid">
-                {classOptions.map(c => (
+            <div id="login-archetype-container">
+              <p id="login-archetype-heading">Choose Your Archetype</p>
+              <div id="login-archetype-grid">
+                {CLASS_OPTIONS.map(c => (
                   <button
                     key={c}
                     type="button"
                     onClick={() => setSelectedClass(c)}
-                    className={selectedClass === c ? "login-archetype-btn login-archetype-btn-active" : "login-archetype-btn login-archetype-btn-inactive"}
+                    className={`login-archetype-btn ${selectedClass === c ? "login-archetype-btn-active" : "login-archetype-btn-inactive"}`}
                   >
                     {c}
                   </button>
@@ -86,17 +79,14 @@ function Login({ onLogin }) {
             </div>
           )}
 
-          <button type="submit" className="login-submit-btn">
+          <button type="submit" id="login-submit-btn">
             {isRegistering ? "Create Account" : "Enter the Realm"}
           </button>
         </form>
 
-        <p 
-          onClick={() => setIsRegistering(!isRegistering)}
-          className="login-toggle-text"
-        >
+        <button onClick={() => setIsRegistering(!isRegistering)} id="login-toggle-text">
           {isRegistering ? "Already have an account? Login here." : "New slayer? Register here."}
-        </p>
+        </button>
       </div>
     </div>
   );
