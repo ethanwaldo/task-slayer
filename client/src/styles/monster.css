@@ -174,3 +174,28 @@
 }
 
 .home-slay-button:hover { background: var(--color-green-dark); }
+
+@media (max-width: 560px) {
+  .home-monster {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .monster-left {
+    flex-wrap: wrap;
+  }
+
+  .monster-details {
+    flex-basis: 100%;
+  }
+
+  .monster-actions {
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: stretch;
+  }
+
+  .monster-actions button {
+    flex: 1;
+  }
+}
