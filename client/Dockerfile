@@ -18,4 +18,5 @@ RUN npm run build
 # Production Server (Static Files)
 FROM caddy:2-alpine AS prod
 COPY --from=build /app/dist /usr/share/caddy
+COPY Caddyfile /etc/caddy/Caddyfile
 EXPOSE 80
