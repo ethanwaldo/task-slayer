@@ -28,7 +28,7 @@
 }
 
 #leaderboard-panel {
-  width: 720px;
+  width: 820px;
   max-width: 100%;
   margin: 0 auto;
   background: linear-gradient(180deg, var(--color-gray-900), var(--color-gray-950));

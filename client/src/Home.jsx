@@ -7,7 +7,7 @@ import warriorImage from "./assets/warrior.webp";
 import scholarImage from "./assets/scholar.png";
 import bardImage from "./assets/bard.webp";
 import monkImage from "./assets/monk.jpg";
-import rogueImage from "./assets/rogue.png";
+import rogueImage from "./assets/rogue.jpg";
 
 const CLASS_IMAGES = {
   Warrior: warriorImage,
@@ -128,15 +128,19 @@ function Home() {
             {profile && <Status profile={profile} />}
           </div>
           <div className="home-section">
-            <h2 id="home-monsters-heading">What monsters will we slay today?</h2>
-            <form onSubmit={onSubmitTask}>
-              <input
-                id="home-monsters-input"
-                onChange={e => setTask(e.target.value)}
-                value={loading ? "" : task}
-                placeholder={loading ? "Summoning AI Monster..." : "try: do the laundry"}
-                disabled={loading}
-              />
+<form onSubmit={onSubmitTask}>
+              <div id="home-summon-row">
+                <input
+                  id="home-monsters-input"
+                  onChange={e => setTask(e.target.value)}
+                  value={task}
+                  placeholder="Enter a task to conquer"
+                  disabled={loading}
+                />
+                <button id="home-summon-btn" type="submit" disabled={loading}>
+                  {loading ? "Summoning..." : "Summon Monster"}
+                </button>
+              </div>
               {summonError && <div id="home-summon-error">{summonError}</div>}
             </form>
           </div>

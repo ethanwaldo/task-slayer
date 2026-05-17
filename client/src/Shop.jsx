@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import PageHeader from "./components/PageHeader";
 import { get, post } from "./requests";
-import apothecaryImage from "./assets/apothacary.jpg";
-import { GiHealthPotion, GiUpgrade, GiBattleAxe, GiCrownCoin, GiCoinsPile, GiSpellBook } from "react-icons/gi";
+import { GiHealthPotion, GiUpgrade, GiBattleAxe, GiCrownCoin, GiCoinsPile, GiSpellBook, GiVisoredHelm, GiMusicalNotes, GiFist, GiNinjaMask } from "react-icons/gi";
 import { FaPalette } from "react-icons/fa";
 
 const ITEMS = [
@@ -12,6 +11,11 @@ const ITEMS = [
   { name: "Coin Rush",         price: 250,  icon: <GiCoinsPile />,    desc: "+50% coins for 24h",                       theme: "yellow" },
   { name: "Tome of Knowledge", price: 300,  icon: <GiSpellBook />,    desc: "Instantly gain 500 XP",                    theme: "green"  },
   { name: "Name Color",        price: 1000, icon: <FaPalette />,      desc: "Your leaderboard name glows gold forever", theme: "yellow" },
+  { name: "Class: Warrior", price: 2000, class_: "Warrior", icon: <GiVisoredHelm />, desc: "Change your class to Warrior", theme: "purple" },
+  { name: "Class: Scholar", price: 2000, class_: "Scholar", icon: <GiSpellBook />,     desc: "Change your class to Scholar", theme: "purple" },
+  { name: "Class: Bard",    price: 2000, class_: "Bard",    icon: <GiMusicalNotes />,  desc: "Change your class to Bard",    theme: "purple" },
+  { name: "Class: Monk",    price: 2000, class_: "Monk",    icon: <GiFist />,           desc: "Change your class to Monk",    theme: "purple" },
+  { name: "Class: Rogue",   price: 2000, class_: "Rogue",   icon: <GiNinjaMask />,     desc: "Change your class to Rogue",   theme: "purple" },
 ];
 
 export default function Shop() {
@@ -23,7 +27,9 @@ export default function Shop() {
 
   async function buy(item) {
     if (!profile || item.price > (profile.coins ?? 0)) return;
-    const data = await post("/api/buy", { name: item.name, price: item.price });
+    const body = { name: item.name, price: item.price };
+    if (item.class_) body.class_ = item.class_;
+    const data = await post("/api/buy", body);
     if (data.profile) setProfile(data.profile);
   }
 
@@ -31,14 +37,11 @@ export default function Shop() {
     <>
       <PageHeader />
       <div id="shop-main">
-        <div id="shop-brand-panel" style={{ backgroundImage: `url(${apothecaryImage})` }}>
-          <div id="shop-brand-overlay" />
-          <div id="shop-brand-footer">
-            <div id="shop-brand-title">Apothecary</div>
-            <div id="shop-brand-sub">Spend your coins. Gain an edge.</div>
-          </div>
-        </div>
         <div id="shop-content">
+          <div id="shop-hero">
+            <h1 id="shop-heading">Apothecary</h1>
+            <p id="shop-subheading">Spend your coins. Gain an edge.</p>
+          </div>
           <div id="shop-balance">
             <span id="shop-balance-icon"><GiCrownCoin /></span>
             <span>{profile !== null ? (profile.coins ?? 0) : "—"}</span>
@@ -52,9 +55,11 @@ export default function Shop() {
                 <button
                   className="shop-item-buy"
                   onClick={() => buy(item)}
-                  disabled={!profile || item.price > (profile.coins ?? 0)}
+                  disabled={!profile || (item.class_ && profile.class_ === item.class_) || (item.name === "Name Color" && profile.items?.nameColor) || item.price > (profile.coins ?? 0)}
                 >
-                  <span>◈</span> {item.price}
+                  {item.class_ && profile?.class_ === item.class_ ? "Current Class"
+                    : item.name === "Name Color" && profile?.items?.nameColor ? "Owned"
+                    : <><span>◈</span> {item.price}</>}
                 </button>
               </div>
             ))}

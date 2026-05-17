@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { post } from "./requests";
+import loginBg from "./assets/login.webp";
+import { GiCrossedSwords } from "react-icons/gi";
 
 const CLASS_OPTIONS = ["Scholar", "Warrior", "Bard", "Monk", "Rogue"];
 
@@ -32,61 +34,70 @@ function Login({ onLogin }) {
   }
 
   return (
-    <div id="login-page">
-      <div id="login-hero">
-        <h1 id="login-heading">Task Slayer</h1>
-        <p id="login-subheading">{isRegistering ? "Forge your destiny." : "Welcome back, slayer."}</p>
+    <div id="login-main">
+      <div id="login-brand-panel" style={{ backgroundImage: `url(${loginBg})` }}>
+        <div id="login-brand-overlay" />
+        <div id="login-brand-content">
+          <GiCrossedSwords id="login-logo" />
+          <h1 id="login-heading">Task Slayer</h1>
+          <p id="login-subheading">{isRegistering ? "Forge your destiny." : "Welcome back, slayer."}</p>
+        </div>
       </div>
 
-      <div id="login-panel">
-        {error && <div id="login-error">{error}</div>}
-
-        <form onSubmit={handleSubmit} id="login-form">
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="login-input"
-            required
-          />
-
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            minLength={6}
-            className="login-input"
-            required
-          />
-
-          {isRegistering && (
-            <div id="login-archetype-container">
-              <p id="login-archetype-heading">Choose Your Archetype</p>
-              <div id="login-archetype-grid">
-                {CLASS_OPTIONS.map(c => (
-                  <button
-                    key={c}
-                    type="button"
-                    onClick={() => setSelectedClass(c)}
-                    className={`login-archetype-btn ${selectedClass === c ? "login-archetype-btn-active" : "login-archetype-btn-inactive"}`}
-                  >
-                    {c}
-                  </button>
-                ))}
+      <div id="login-form-panel">
+        <div id="login-content">
+          <div id="login-panel">
+            <form onSubmit={handleSubmit} id="login-form">
+              <div className="login-section">
+                {error && <div id="login-error">{error}</div>}
+                <input
+                  type="text"
+                  placeholder={isRegistering ? "Choose a Username" : "Username"}
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="login-input"
+                  required
+                />
+                <input
+                  type="password"
+                  placeholder={isRegistering ? "Choose a Password" : "Password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  minLength={6}
+                  className="login-input"
+                  required
+                />
               </div>
-            </div>
-          )}
 
-          <button type="submit" id="login-submit-btn">
-            {isRegistering ? "Create Account" : "Enter the Realm"}
-          </button>
-        </form>
+              {isRegistering && (
+                <div className="login-section">
+                  <p id="login-archetype-heading">Choose Your Archetype</p>
+                  <div id="login-archetype-grid">
+                    {CLASS_OPTIONS.map(c => (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => setSelectedClass(c)}
+                        className={`login-archetype-btn ${selectedClass === c ? "login-archetype-btn-active" : "login-archetype-btn-inactive"}`}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-        <button onClick={() => setIsRegistering(!isRegistering)} id="login-toggle-text">
-          {isRegistering ? "Already have an account? Login here." : "New slayer? Register here."}
-        </button>
+              <div className="login-section login-section-last">
+                <button type="submit" id="login-submit-btn">
+                  {isRegistering ? "Create Account" : "Enter the Realm"}
+                </button>
+                <button type="button" onClick={() => setIsRegistering(!isRegistering)} id="login-toggle-text">
+                  {isRegistering ? "Already have an account? Login here." : "New slayer? Register here."}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );

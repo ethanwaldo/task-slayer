@@ -39,7 +39,8 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  min-width: 120px;
+  width: 180px;
+  flex-shrink: 0;
 }
 
 .monster-details {
