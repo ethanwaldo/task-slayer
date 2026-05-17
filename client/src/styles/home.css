@@ -102,6 +102,13 @@
   opacity: 1;
 }
 
+#home-summon-error {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--color-red-400);
+  font-weight: bold;
+}
+
 #home-monsters {
   display: flex;
   flex-direction: column;

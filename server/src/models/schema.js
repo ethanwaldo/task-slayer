@@ -9,9 +9,9 @@ const statBlock = {
 };
 
 const questSchema = new mongoose.Schema({
-  description:     { type: String, required: true },
+  task:            { type: String, required: true },
   monsterName:     { type: String, required: true },
-  flavorText:      { type: String, default: "" },
+  description:     { type: String, default: "" },
   type:            { type: String, default: "" },
   imageUrl:        { type: String, default: "" },
   primaryStat:     { type: String, enum: ["STR", "INT", "AGI", "CON", "CHA"], default: "INT" },

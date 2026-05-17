@@ -7,21 +7,21 @@ import { generateMonsterData } from '../services/monster.js';
 const router = express.Router();
 
 router.post('/summon', auth, async (req, res) => {
-  const { description } = req.body;
-  if (!description || typeof description !== 'string') {
-    return res.status(400).json({ error: "Description required" });
+  const { task } = req.body;
+  if (!task || typeof task !== 'string') {
+    return res.status(400).json({ error: "Task required" });
   }
 
   try {
     const user = await User.findOne({ username: req.user.username });
     if (!user) return res.status(401).json({ result: "unauthorized" });
 
-    const monster = await generateMonsterData(description);
+    const monster = await generateMonsterData(task);
 
     user.quests.push({
-      description,
+      task,
       monsterName: monster.name,
-      flavorText: monster.flavorText || "",
+      description: monster.description || "",
       type: monster.type || "",
       imageUrl: monster.imageUrl || "",
       primaryStat: monster.primaryStat || "INT",

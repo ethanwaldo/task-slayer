@@ -6,11 +6,11 @@ export function parseMonster(data) {
   return {
     id: data._id,
     taskName: data.monsterName,
-    flavorText: data.flavorText,
+    description: data.description,
     imageUrl: data.imageUrl,
     kind: data.type,
     primaryStat: data.primaryStat || "INT",
-    task: data.description,
+    task: data.task,
     deadline: data.deadline || null,
     missedDeadline: data.missedDeadline || false,
   };
@@ -68,7 +68,7 @@ function MonsterView({ monster, onSlay, onEdit, onDelete }) {
           <span className="monster-stat-badge">{monster.primaryStat || monster.kind}</span>
         </div>
         <div className="monster-details">
-          {monster.flavorText && <div className="monster-flavor">"{monster.flavorText}"</div>}
+          {monster.description && <div className="monster-flavor">"{monster.description}"</div>}
           <div className="monster-task">Task: {monster.task}</div>
           {monster.deadline && (
             <div className="monster-deadline">

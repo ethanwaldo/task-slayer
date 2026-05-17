@@ -21,6 +21,7 @@ function Home() {
   const [task, setTask] = useState("");
   const [monsters, setMonsters] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [summonError, setSummonError] = useState("");
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
@@ -67,13 +68,14 @@ function Home() {
     e.preventDefault();
     if (task.trim().length === 0) return;
     setLoading(true);
+    setSummonError("");
     try {
-      const data = await post("/api/summon", { description: task });
-      if (!data.quest) { console.error("Summon failed:", data.error); return; }
+      const data = await post("/api/summon", { task });
+      if (!data.quest) { setSummonError(data.error || "Failed to summon monster"); return; }
       setMonsters(prev => [...prev, parseMonster(data.quest)]);
       setTask("");
     } catch (error) {
-      console.error("Failed to summon monster:", error);
+      setSummonError("Could not reach server");
     } finally {
       setLoading(false);
     }
@@ -135,6 +137,7 @@ function Home() {
                 placeholder={loading ? "Summoning AI Monster..." : "try: do the laundry"}
                 disabled={loading}
               />
+              {summonError && <div id="home-summon-error">{summonError}</div>}
             </form>
           </div>
           <div className="home-section" id="home-section-monsters">
