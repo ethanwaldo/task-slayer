@@ -1,5 +1,6 @@
 services:
   frontend:
+    image: waldoethan/task-slayer-frontend:latest
     build:
       context: ./client
       target: ${NODE_ENV:-dev} # Use 'prod' on the Pi
@@ -10,6 +11,7 @@ services:
       - app-network
 
   backend:
+    image: waldoethan/task-slayer-backend:latest
     build: ./server
     restart: always
     environment:
