@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
   class_:        { type: String, enum: ["Warrior", "Scholar", "Bard", "Monk", "Rogue"], required: true },
   title:         { type: String, default: "Apprentice Slayer" },
   hp:            { type: Number, default: 10 },
-  exp:           { type: Number, default: 0 },
+  exp:           { type: Number, default: 0, index: true },
   coins:         { type: Number, default: 0 },
   stats: {
     STR: { type: Number, default: 10 },
